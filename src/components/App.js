@@ -1,9 +1,9 @@
 import React from 'react';
-import Sample from '../containers/Sample';
+import Dungeon from '../containers/Dungeon';
 
 const App = () => (
   <div>
-    <Sample />
+    <Dungeon />
   </div>
 );
 

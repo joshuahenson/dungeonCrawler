@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import sample from './reducer_sample';
+import dungeon from './reducer_dungeon';
+import player from './reducer_player';
 
 const rootReducer = combineReducers({
-  sample
+  dungeon,
+  player
 });
 
 export default rootReducer;

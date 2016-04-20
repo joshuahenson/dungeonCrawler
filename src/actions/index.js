@@ -1,5 +1,7 @@
-export function sampleAction() {
+export function updatePosition(key, board) {
   return {
-    type: 'SAMPLE_ACTION',
+    type: 'UPDATE_POSITION',
+    key: key.keyCode,
+    board
   };
 }
