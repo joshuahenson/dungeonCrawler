@@ -15,17 +15,19 @@ export default class Player extends Component {
   }
   render() {
     return (
-        <svg className="player"
+        <div className="player"
           style={{
             top: this.props.location.x * 10,
             left: this.props.location.y * 10,
           }}
         >
-          <circle id="yellowcircle" cx="5" cy="5" r="5" fill="yellow" />
-          <rect x="2" y="3" width="2" height="1" />
-          <rect x="6" y="3" width="2" height="1" />
-          <rect x="3" y="6" width="4" height="2" />
-        </svg>
+          <svg>
+            <circle id="yellowcircle" cx="5" cy="5" r="5" fill="yellow" />
+            <rect x="2" y="3" width="2" height="1" />
+            <rect x="6" y="3" width="2" height="1" />
+            <rect x="3" y="6" width="4" height="2" />
+          </svg>
+        </div>
     );
   }
 }
