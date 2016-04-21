@@ -1,12 +1,14 @@
-// todo decide if I want to stick with this plan of decoupled display/board
-// or map board to div/span
+// todo trigger visible when player in room/hall
+// how to see hall entrance
 
 const rooms = [
-  { x1: 2, y1: 2, x2: 30, y2: 30 },
-  { x1: 42, y1: 2, x2: 70, y2: 30 }
+  { x1: 2, y1: 2, x2: 30, y2: 30, visible: false },
+  { x1: 42, y1: 2, x2: 70, y2: 30, visible: false },
+  { x1: 42, y1: 40, x2: 70, y2: 60, visible: false }
 ];
 const halls = [
-  { x1: 30, y1: 10, x2: 42, y2: 10 }
+  { x1: 29, y1: 10, x2: 43, y2: 10, visible: false },
+  { x1: 50, y1: 29, x2: 50, y2: 41, visible: false }
 ];
 
 // initiate board with 0's to start

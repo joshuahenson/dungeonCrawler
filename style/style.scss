@@ -1,6 +1,10 @@
+body {
+  background-color: lighten(black, 5%);
+}
+
 .dungeon {
   position: relative;
-  background-color: gray;
+  background-color: black;
   width: 1000px;
   height: 700px;
 }
