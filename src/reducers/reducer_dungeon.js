@@ -50,8 +50,16 @@ const initialState = {
 
 const dungeon = (state = initialState, action) => {
   switch (action.type) {
-    // case 'SAMPLE_ACTION':
-    //   return !state;
+    case 'SET_HALL_VISIBILITY':
+      return Object.assign({}, state, {
+        halls: [
+          ...state.halls.slice(0, action.index),
+          Object.assign({}, state.halls[action.index], {
+            visible: true
+          }),
+          ...state.halls.slice(action.index + 1)
+        ]
+      });
     default:
       return state;
   }

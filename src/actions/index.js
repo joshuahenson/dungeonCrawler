@@ -4,3 +4,10 @@ export function updatePosition(position) {
     position
   };
 }
+
+export function setHallVisibility(index) {
+  return {
+    type: 'SET_HALL_VISIBILITY',
+    index
+  };
+}

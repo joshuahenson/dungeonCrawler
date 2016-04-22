@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updatePosition } from '../actions/index';
+import { updatePosition, setHallVisibility } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 export default class Player extends Component {
@@ -9,6 +9,27 @@ export default class Player extends Component {
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.checkPosition.bind(this));
+  }
+  checkVisibility(position) {
+    // check if location is visible
+    // check halls
+    const halls = this.props.halls;
+    for (let i = 0; i < halls.length; i++) {
+      // check if position in hall
+      console.log('pos x', position.x);
+      console.log('pos y', position.y);
+      console.log('halls', halls[i]);
+      if (position.x >= halls[i].x1 && position.x <= halls[i].x2 && position.y >= halls[i].y1 && position.y <= halls[i].y2) {
+        // check if visible
+        console.log('checking vis');
+        if (!halls[i].visible) {
+          console.log('not visible');
+          this.props.setHallVisibility(i);
+          break;
+        }
+      }
+    }
+    // check rooms
   }
   checkPosition(key) {
     // check key direction and whether board is open
@@ -27,9 +48,9 @@ export default class Player extends Component {
       newPosition = { x: x + 1, y };
     }
     if (newPosition) {
-      return this.props.updatePosition(newPosition);
+      this.props.updatePosition(newPosition);
+      this.checkVisibility(newPosition);
     }
-    return null;
   }
   render() {
     return (
@@ -53,18 +74,23 @@ export default class Player extends Component {
 Player.propTypes = {
   location: PropTypes.object,
   updatePosition: PropTypes.func,
-  board: PropTypes.array
+  board: PropTypes.array,
+  rooms: PropTypes.array,
+  halls: PropTypes.array,
+  setHallVisibility: PropTypes.func
 };
 
 function mapStateToProps(state) {
   return {
     location: state.player.location,
-    board: state.dungeon.board
+    board: state.dungeon.board,
+    rooms: state.dungeon.rooms,
+    halls: state.dungeon.halls
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updatePosition }, dispatch);
+  return bindActionCreators({ updatePosition, setHallVisibility }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);
