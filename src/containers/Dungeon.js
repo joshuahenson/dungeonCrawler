@@ -12,8 +12,8 @@ export default class Dungeon extends Component {
           <div key={index} className="room" style={{
             top: room.y1 * 10,
             left: room.x1 * 10,
-            width: (room.y2 - room.y1) * 10,
-            height: (room.x2 - room.x1) * 10
+            width: (room.x2 - room.x1) * 10,
+            height: (room.y2 - room.y1) * 10
           }}
           />
         ) }
@@ -23,7 +23,7 @@ export default class Dungeon extends Component {
             left: hall.x1 * 10,
             width: hall.x2 > hall.x1 ? (hall.x2 - hall.x1) * 10 : 10,
             height: hall.y2 > hall.y1 ? (hall.y2 - hall.y1) * 10 : 10,
-            backgroundColor: hall.visible ? 'rgba(125, 125, 125, 0.7)' : 'white'
+            backgroundColor: hall.visible ? 'rgba(125, 125, 125, 0.7)' : 'black'
           }}
           />
         ) }

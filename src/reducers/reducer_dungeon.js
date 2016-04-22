@@ -2,7 +2,7 @@
 // change hall color when visible
 
 const rooms = [
-  { x1: 2, y1: 2, x2: 30, y2: 30, visible: false },
+  { x1: 0, y1: 2, x2: 30, y2: 15, visible: false },
   { x1: 42, y1: 2, x2: 70, y2: 30, visible: false },
   { x1: 42, y1: 40, x2: 70, y2: 60, visible: false }
 ];

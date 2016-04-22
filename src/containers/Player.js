@@ -16,14 +16,10 @@ export default class Player extends Component {
     const halls = this.props.halls;
     for (let i = 0; i < halls.length; i++) {
       // check if position in hall
-      console.log('pos x', position.x);
-      console.log('pos y', position.y);
-      console.log('halls', halls[i]);
-      if (position.x >= halls[i].x1 && position.x <= halls[i].x2 && position.y >= halls[i].y1 && position.y <= halls[i].y2) {
+      if (position.x >= halls[i].x1 && position.x <= halls[i].x2 &&
+  position.y >= halls[i].y1 && position.y <= halls[i].y2) {
         // check if visible
-        console.log('checking vis');
         if (!halls[i].visible) {
-          console.log('not visible');
           this.props.setHallVisibility(i);
           break;
         }
@@ -38,14 +34,17 @@ export default class Player extends Component {
     const board = this.props.board;
     const x = this.props.location.x;
     const y = this.props.location.y;
-    if (key.keyCode === 37 && board[x][y - 1]) { // left
-      newPosition = { x, y: y - 1 };
-    } else if (key.keyCode === 38 && board[x - 1][y]) { // up
+    // console.log('yx', board[y][x]);
+    // console.log('y x+1', board[y][x + 1]);
+    // console.log('y+1 x', board[y + 1][x]);
+    if (key.keyCode === 37 && board[y][x - 1]) { // left
       newPosition = { x: x - 1, y };
-    } else if (key.keyCode === 39 && board[x][y + 1]) { // right
-      newPosition = { x, y: y + 1 };
-    } else if (key.keyCode === 40 && board[x + 1][y]) { // down
+    } else if (key.keyCode === 38 && board[y - 1][x]) { // up
+      newPosition = { x, y: y - 1 };
+    } else if (key.keyCode === 39 && board[y][x + 1]) { // right
       newPosition = { x: x + 1, y };
+    } else if (key.keyCode === 40 && board[y + 1][x]) { // down
+      newPosition = { x, y: y + 1 };
     }
     if (newPosition) {
       this.props.updatePosition(newPosition);
@@ -56,8 +55,8 @@ export default class Player extends Component {
     return (
         <div className="player"
           style={{
-            top: this.props.location.x * 10,
-            left: this.props.location.y * 10,
+            top: this.props.location.y * 10,
+            left: this.props.location.x * 10,
           }}
         >
           <svg>
