@@ -26,12 +26,10 @@ export default class Player extends Component {
     } else if (key.keyCode === 40 && board[x + 1][y]) { // down
       newPosition = { x: x + 1, y };
     }
-    console.log(newPosition)
     if (newPosition) {
-      console.log('new position')
       return this.props.updatePosition(newPosition);
-    } 
-    console.log('not new')
+    }
+    return null;
   }
   render() {
     return (

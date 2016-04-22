@@ -10,12 +10,6 @@ const halls = [
   { x1: 29, y1: 10, x2: 43, y2: 10, visible: false },
   { x1: 50, y1: 29, x2: 50, y2: 41, visible: false }
 ];
-// const halls = {
-//   0: { x1: 29, y1: 10, x2: 43, y2: 10, visible: false },
-//   1: { x1: 50, y1: 29, x2: 50, y2: 41, visible: false }
-// };
-
-// halls[1].visible = true;
 
 // initiate board with 0's to start
 const board = [];
