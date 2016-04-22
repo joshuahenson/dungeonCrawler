@@ -38,13 +38,21 @@ export default class Player extends Component {
     const board = this.props.board;
     const x = this.props.location.x;
     const y = this.props.location.y;
-    if (key.keyCode === 37 && board[y][x - 1]) { // left
+  //   if (key.keyCode === 37 && board[y][x - 1]) { // left
+  //     newPosition = { x: x - 1, y };
+  // } else if (key.keyCode === 38 && board[y - 1][x]) { // up
+  //   newPosition = { x, y: y - 1 };
+  // } else if (key.keyCode === 39 && board[y][x + 1]) { // right
+  //   newPosition = { x: x + 1, y };
+  // } else if (key.keyCode === 40 && board[y + 1][x]) { // down
+  //   newPosition = { x, y: y + 1 };
+    if (key.keyCode === 37 && board[x - 1][y]) { // left
       newPosition = { x: x - 1, y };
-    } else if (key.keyCode === 38 && board[y - 1][x]) { // up
+    } else if (key.keyCode === 38 && board[x][y - 1]) { // up
       newPosition = { x, y: y - 1 };
-    } else if (key.keyCode === 39 && board[y][x + 1]) { // right
+    } else if (key.keyCode === 39 && board[x + 1][y]) { // right
       newPosition = { x: x + 1, y };
-    } else if (key.keyCode === 40 && board[y + 1][x]) { // down
+    } else if (key.keyCode === 40 && board[x][y + 1]) { // down
       newPosition = { x, y: y + 1 };
     }
     if (newPosition) {
