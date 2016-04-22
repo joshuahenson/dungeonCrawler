@@ -1,14 +1,17 @@
-// todo trigger visible when player in room/hall
-// change hall color when visible
+const rooms = [];
+for (let i = 0; i < 9; i++) {
+  rooms[i] = {
+    x1: Math.floor(Math.random() * 12) + ((i % 3) * 34),
+    x2: (32 - Math.floor(Math.random() * 12)) + ((i % 3) * 34),
+    y1: Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24),
+    y2: (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24),
+    visible: true
+  };
+}
 
-const rooms = [
-  { x1: 0, y1: 2, x2: 30, y2: 15, visible: true },
-  { x1: 42, y1: 2, x2: 70, y2: 30, visible: false },
-  { x1: 42, y1: 40, x2: 70, y2: 60, visible: false }
-];
 const halls = [
-  { x1: 29, y1: 10, x2: 43, y2: 10, visible: false },
-  { x1: 50, y1: 29, x2: 50, y2: 41, visible: false }
+  // { x1: 29, y1: 10, x2: 43, y2: 10, visible: false },
+  // { x1: 50, y1: 29, x2: 50, y2: 41, visible: false }
 ];
 
 // initiate board with 0's to start
