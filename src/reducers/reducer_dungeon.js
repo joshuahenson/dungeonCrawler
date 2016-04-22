@@ -2,7 +2,7 @@
 // change hall color when visible
 
 const rooms = [
-  { x1: 0, y1: 2, x2: 30, y2: 15, visible: false },
+  { x1: 0, y1: 2, x2: 30, y2: 15, visible: true },
   { x1: 42, y1: 2, x2: 70, y2: 30, visible: false },
   { x1: 42, y1: 40, x2: 70, y2: 60, visible: false }
 ];
@@ -58,6 +58,16 @@ const dungeon = (state = initialState, action) => {
             visible: true
           }),
           ...state.halls.slice(action.index + 1)
+        ]
+      });
+    case 'SET_ROOM_VISIBILITY':
+      return Object.assign({}, state, {
+        rooms: [
+          ...state.rooms.slice(0, action.index),
+          Object.assign({}, state.rooms[action.index], {
+            visible: true
+          }),
+          ...state.rooms.slice(action.index + 1)
         ]
       });
     default:

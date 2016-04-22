@@ -11,12 +11,12 @@ body {
 
 .room {
   position: absolute;
-  background-color: rgba(255, 255, 0, 0.3);
+  transition: background-color 0.8s ease;
 }
 
 .hall {
   position: absolute;
-  // background-color: black;
+  transition: background-color 0.8s ease;
 }
 
 .player {

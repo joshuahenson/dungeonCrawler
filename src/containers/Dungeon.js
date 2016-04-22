@@ -13,7 +13,8 @@ export default class Dungeon extends Component {
             top: room.y1 * 10,
             left: room.x1 * 10,
             width: (room.x2 - room.x1) * 10,
-            height: (room.y2 - room.y1) * 10
+            height: (room.y2 - room.y1) * 10,
+            backgroundColor: room.visible ? 'rgba(255, 255, 0, 0.3)' : 'black'
           }}
           />
         ) }

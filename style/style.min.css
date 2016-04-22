@@ -1,1 +1,1 @@
-body{background-color:#0d0d0d}.dungeon{position:relative;background-color:black;width:1000px;height:700px}.room{position:absolute;background-color:rgba(255,255,0,0.3)}.hall{position:absolute}.player{position:absolute}
+body{background-color:#0d0d0d}.dungeon{position:relative;background-color:black;width:1000px;height:700px}.room{position:absolute;transition:background-color 0.8s ease}.hall{position:absolute;transition:background-color 0.8s ease}.player{position:absolute}

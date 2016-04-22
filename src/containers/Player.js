@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updatePosition, setHallVisibility } from '../actions/index';
+import { updatePosition, setHallVisibility, setRoomVisibility } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 export default class Player extends Component {
@@ -22,6 +22,14 @@ export default class Player extends Component {
       }
     }
     // check rooms
+    const rooms = this.props.rooms;
+    for (let i = 0; i < rooms.length; i++) {
+      if (!rooms[i].visible && position.x >= rooms[i].x1 &&
+        position.x <= rooms[i].x2 && position.y >= rooms[i].y1 &&
+        position.y <= rooms[i].y2) {
+        this.props.setRoomVisibility(i);
+      }
+    }
   }
   checkPosition(key) {
     // check key direction and whether board is open
@@ -30,9 +38,6 @@ export default class Player extends Component {
     const board = this.props.board;
     const x = this.props.location.x;
     const y = this.props.location.y;
-    // console.log('yx', board[y][x]);
-    // console.log('y x+1', board[y][x + 1]);
-    // console.log('y+1 x', board[y + 1][x]);
     if (key.keyCode === 37 && board[y][x - 1]) { // left
       newPosition = { x: x - 1, y };
     } else if (key.keyCode === 38 && board[y - 1][x]) { // up
@@ -72,7 +77,8 @@ Player.propTypes = {
   board: PropTypes.array,
   rooms: PropTypes.array,
   halls: PropTypes.array,
-  setHallVisibility: PropTypes.func
+  setHallVisibility: PropTypes.func,
+  setRoomVisibility: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -85,7 +91,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updatePosition, setHallVisibility }, dispatch);
+  return bindActionCreators({ updatePosition, setHallVisibility, setRoomVisibility }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

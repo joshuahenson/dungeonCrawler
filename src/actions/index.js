@@ -11,3 +11,10 @@ export function setHallVisibility(index) {
     index
   };
 }
+
+export function setRoomVisibility(index) {
+  return {
+    type: 'SET_ROOM_VISIBILITY',
+    index
+  };
+}
