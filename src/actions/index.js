@@ -1,7 +1,6 @@
-export function updatePosition(key, board) {
+export function updatePosition(position) {
   return {
     type: 'UPDATE_POSITION',
-    key: key.keyCode,
-    board
+    position
   };
 }

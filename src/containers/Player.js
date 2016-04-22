@@ -5,13 +5,33 @@ import { bindActionCreators } from 'redux';
 
 export default class Player extends Component {
   componentDidMount() {
-    window.addEventListener('keydown', this.updatePos.bind(this));
+    window.addEventListener('keydown', this.checkPosition.bind(this));
   }
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.updatePos.bind(this));
+    window.removeEventListener('keydown', this.checkPosition.bind(this));
   }
-  updatePos(key) {
-    this.props.updatePosition(key, this.props.board);
+  checkPosition(key) {
+    // check key direction and whether board is open
+    // todo compare to enemy location
+    let newPosition = null;
+    const board = this.props.board;
+    const x = this.props.location.x;
+    const y = this.props.location.y;
+    if (key.keyCode === 37 && board[x][y - 1]) { // left
+      newPosition = { x, y: y - 1 };
+    } else if (key.keyCode === 38 && board[x - 1][y]) { // up
+      newPosition = { x: x - 1, y };
+    } else if (key.keyCode === 39 && board[x][y + 1]) { // right
+      newPosition = { x, y: y + 1 };
+    } else if (key.keyCode === 40 && board[x + 1][y]) { // down
+      newPosition = { x: x + 1, y };
+    }
+    console.log(newPosition)
+    if (newPosition) {
+      console.log('new position')
+      return this.props.updatePosition(newPosition);
+    } 
+    console.log('not new')
   }
   render() {
     return (
