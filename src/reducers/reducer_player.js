@@ -1,7 +1,7 @@
 const initialState = {
   location: {
-    x: 16,
-    y: 10
+    x: null,
+    y: null
   }
 };
 

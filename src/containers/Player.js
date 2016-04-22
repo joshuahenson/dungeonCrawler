@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 export default class Player extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.checkPosition.bind(this));
+    this.props.updatePosition({ x: 16, y: 10 }); // placeholder to randomize later
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.checkPosition.bind(this));
