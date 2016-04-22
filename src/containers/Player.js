@@ -11,18 +11,14 @@ export default class Player extends Component {
     window.removeEventListener('keydown', this.checkPosition.bind(this));
   }
   checkVisibility(position) {
-    // check if location is visible
+    // check if position is in location and location is visible
     // check halls
     const halls = this.props.halls;
     for (let i = 0; i < halls.length; i++) {
-      // check if position in hall
-      if (position.x >= halls[i].x1 && position.x <= halls[i].x2 &&
-  position.y >= halls[i].y1 && position.y <= halls[i].y2) {
-        // check if visible
-        if (!halls[i].visible) {
-          this.props.setHallVisibility(i);
-          break;
-        }
+      if (!halls[i].visible && position.x >= halls[i].x1 &&
+        position.x <= halls[i].x2 && position.y >= halls[i].y1 &&
+        position.y <= halls[i].y2) {
+        this.props.setHallVisibility(i);
       }
     }
     // check rooms
