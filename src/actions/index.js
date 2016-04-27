@@ -18,3 +18,10 @@ export function setRoomVisibility(index) {
     index
   };
 }
+
+export function toggleActiveRoom(index) {
+  return {
+    type: 'TOGGLE_ACTIVE_ROOM',
+    index
+  };
+}

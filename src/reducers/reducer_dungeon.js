@@ -7,7 +7,8 @@ for (let i = 0; i < 9; i++) {
     x2: (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34),
     y1: Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24),
     y2: (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24),
-    visible: false
+    visible: false,
+    active: false
   };
 }
 
@@ -114,6 +115,16 @@ const dungeon = (state = initialState, action) => {
           ...state.rooms.slice(0, action.index),
           Object.assign({}, state.rooms[action.index], {
             visible: true
+          }),
+          ...state.rooms.slice(action.index + 1)
+        ]
+      });
+    case 'TOGGLE_ACTIVE_ROOM':
+      return Object.assign({}, state, {
+        rooms: [
+          ...state.rooms.slice(0, action.index),
+          Object.assign({}, state.rooms[action.index], {
+            active: !state.rooms[action.index].active
           }),
           ...state.rooms.slice(action.index + 1)
         ]

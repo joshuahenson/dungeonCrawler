@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updatePosition, setHallVisibility, setRoomVisibility } from '../actions/index';
+import { updatePosition, setHallVisibility, setRoomVisibility, toggleActiveRoom } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 export default class Player extends Component {
@@ -11,7 +11,7 @@ export default class Player extends Component {
   componentWillUnmount() {
     window.removeEventListener('keydown', this.checkPosition.bind(this));
   }
-  checkVisibility(position) {
+  checkStatus(position) {
     // check if position is in location and location is visible
     // check halls
     const halls = this.props.halls;
@@ -25,11 +25,17 @@ export default class Player extends Component {
     // check rooms
     const rooms = this.props.rooms;
     for (let i = 0; i < rooms.length; i++) {
-      if (!rooms[i].visible && position.x >= rooms[i].x1 &&
-        position.x <= rooms[i].x2 && position.y >= rooms[i].y1 &&
-        position.y <= rooms[i].y2) {
-        this.props.setRoomVisibility(i);
-      }
+      if (position.x >= rooms[i].x1 && position.x <= rooms[i].x2 &&
+        position.y >= rooms[i].y1 && position.y <= rooms[i].y2) { // player in room
+        if (!rooms[i].visible) { // player in room but room isn't visible
+          this.props.setRoomVisibility(i);
+        }
+        if (!rooms[i].active) { // player in room but room isn't active
+          this.props.toggleActiveRoom(i);
+        }
+      } else if (rooms[i].active) { // player not in room but room is active
+          this.props.toggleActiveRoom(i);
+        }
     }
   }
   checkPosition(key) {
@@ -50,7 +56,7 @@ export default class Player extends Component {
     }
     if (newPosition) {
       this.props.updatePosition(newPosition);
-      this.checkVisibility(newPosition);
+      this.checkStatus(newPosition);
     }
   }
   render() {
@@ -79,7 +85,8 @@ Player.propTypes = {
   rooms: PropTypes.array,
   halls: PropTypes.array,
   setHallVisibility: PropTypes.func,
-  setRoomVisibility: PropTypes.func
+  setRoomVisibility: PropTypes.func,
+  toggleActiveRoom: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -92,7 +99,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updatePosition, setHallVisibility, setRoomVisibility }, dispatch);
+  return bindActionCreators({ updatePosition, setHallVisibility, setRoomVisibility, toggleActiveRoom }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);
