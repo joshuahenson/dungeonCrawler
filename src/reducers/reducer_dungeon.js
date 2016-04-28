@@ -2,13 +2,23 @@
 // range must cover middle of grid square to simplify aligning hallways
 const rooms = [];
 for (let i = 0; i < 9; i++) {
+  const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34); // ceil to keep off left border
+  const x2 = (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34);
+  const y1 = Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24);
+  const y2 = (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24);
   rooms[i] = {
-    x1: Math.ceil(Math.random() * 12) + ((i % 3) * 34), // ceil to keep off left border
-    x2: (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34),
-    y1: Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24),
-    y2: (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24),
-    visible: false,
-    active: false
+    x1,
+    x2,
+    y1,
+    y2,
+    visible: true,
+    active: false,
+    enemy: {
+      alive: true, // todo random whether room has enemy
+      type: 'generic', // todo assign type?
+      x: Math.floor(Math.random() * (x2 - x1 - 1)) + x1 + 1, // keep 1 space away from edge
+      y: Math.floor(Math.random() * (y2 - y1 - 1)) + y1 + 1, // keep 1 space away from edge
+    }
   };
 }
 
