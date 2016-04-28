@@ -23,7 +23,7 @@ const Rooms = ({ rooms }) => (
           backgroundColor: determineBackground(room.visible, room.active)
         }}
         />
-        <Enemy status={ room.enemy } id={ index } />
+        <Enemy active={ room.active } status={ room.enemy } id={ index } />
       </div>
     )}
   </div>

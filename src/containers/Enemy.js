@@ -10,6 +10,7 @@ export default class Enemy extends Component {
           style={{
             top: this.props.status.y * 10,
             left: this.props.status.x * 10,
+            opacity: this.props.status.alive && this.props.active ? 1 : 0
           }}
         >
           <svg>

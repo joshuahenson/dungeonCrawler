@@ -11,7 +11,7 @@ for (let i = 0; i < 9; i++) {
     x2,
     y1,
     y2,
-    visible: true,
+    visible: false,
     active: false,
     enemy: {
       alive: true, // todo random whether room has enemy
