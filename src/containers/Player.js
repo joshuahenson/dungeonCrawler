@@ -14,6 +14,7 @@ export default class Player extends Component {
   checkStatus(position) {
     // check if position is in location and location is visible
     // check halls
+    // todo fix hall visibility when entering from right or below
     const halls = this.props.halls;
     for (let i = 0; i < halls.length; i++) {
       if (!halls[i].visible && position.x >= halls[i].x1 &&
@@ -25,8 +26,8 @@ export default class Player extends Component {
     // check rooms
     const rooms = this.props.rooms;
     for (let i = 0; i < rooms.length; i++) {
-      if (position.x >= rooms[i].x1 && position.x <= rooms[i].x2 &&
-        position.y >= rooms[i].y1 && position.y <= rooms[i].y2) { // player in room
+      if (position.x >= rooms[i].x1 && position.x < rooms[i].x2 &&
+        position.y >= rooms[i].y1 && position.y < rooms[i].y2) { // player in room
         if (!rooms[i].visible) { // player in room but room isn't visible
           this.props.setRoomVisibility(i);
         }
