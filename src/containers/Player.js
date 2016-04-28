@@ -14,12 +14,12 @@ export default class Player extends Component {
   checkStatus(position) {
     // check if position is in location and location is visible
     // check halls
-    // todo fix hall visibility when entering from right or below
     const halls = this.props.halls;
     for (let i = 0; i < halls.length; i++) {
       if (!halls[i].visible && position.x >= halls[i].x1 &&
-        position.x <= halls[i].x2 && position.y >= halls[i].y1 &&
-        position.y <= halls[i].y2) {
+        position.x < halls[i].x2 && position.y === halls[i].y1 ||
+        !halls[i].visible && position.y >= halls[i].y1 &&
+        position.y < halls[i].y2 && position.x === halls[i].x1) {
         this.props.setHallVisibility(i);
       }
     }
