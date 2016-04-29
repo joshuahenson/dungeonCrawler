@@ -1,6 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updatePosition, setHallVisibility, setRoomVisibility, toggleActiveRoom } from '../actions/index';
+import {
+  updatePosition,
+  setHallVisibility,
+  setRoomVisibility,
+  toggleActiveRoom
+} from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 export default class Player extends Component {
@@ -35,8 +40,8 @@ export default class Player extends Component {
           this.props.toggleActiveRoom(i);
         }
       } else if (rooms[i].active) { // player not in room but room is active
-          this.props.toggleActiveRoom(i);
-        }
+        this.props.toggleActiveRoom(i);
+      }
     }
   }
   checkPosition(key) {
@@ -100,7 +105,12 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updatePosition, setHallVisibility, setRoomVisibility, toggleActiveRoom }, dispatch);
+  return bindActionCreators({
+    updatePosition,
+    setHallVisibility,
+    setRoomVisibility,
+    toggleActiveRoom
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

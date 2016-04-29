@@ -25,14 +25,8 @@ export default class Enemy extends Component {
 }
 
 Enemy.propTypes = {
-  location: PropTypes.object,
-  updatePosition: PropTypes.func,
-  board: PropTypes.array,
-  rooms: PropTypes.array,
-  halls: PropTypes.array,
-  setHallVisibility: PropTypes.func,
-  setRoomVisibility: PropTypes.func,
-  toggleActiveRoom: PropTypes.func
+  status: PropTypes.object,
+  active: PropTypes.bool
 };
 
 function mapDispatchToProps(dispatch) {
