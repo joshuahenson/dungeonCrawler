@@ -9,8 +9,21 @@ alternately have ground level stairs in center that lead to 1st level
 stair locations are randomized
 
 add enemies
-add weapons
+
+add weapons?
+* club
+* dagger
+* sword
+
 add levels
+
+dungeon levels as parallel to player level: unable to advance to next dungeon level until certain xp?
+defeating enemies gives you part of a key to open the gate to the next level?
+OR
+
+
+
+
 
 # User Stories
 User Story: I have health, a level, and a weapon. I can pick up a better weapon. I can pick up health items.

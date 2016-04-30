@@ -1,11 +1,15 @@
 // returns an array of 9 rooms randomly sized in a 3x3 grid
 // range must cover middle of grid square to simplify aligning hallways
 const rooms = [];
+const occupied = new Set(); // track spaces occupied by special items
 for (let i = 0; i < 9; i++) {
   const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34); // ceil to keep off left border
   const x2 = (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34);
   const y1 = Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24);
   const y2 = (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24);
+  const enemyX = Math.floor(Math.random() * (x2 - x1 - 1)) + x1 + 1; // keep 1 space away from edge
+  const enemyY = Math.floor(Math.random() * (y2 - y1 - 1)) + y1 + 1; // keep 1 space away from edge
+  occupied.add(`${enemyX}_${enemyY}`);
   rooms[i] = {
     x1,
     x2,
@@ -16,8 +20,8 @@ for (let i = 0; i < 9; i++) {
     enemy: {
       alive: true, // todo random whether room has enemy
       type: 'generic', // todo assign type?
-      x: Math.floor(Math.random() * (x2 - x1 - 1)) + x1 + 1, // keep 1 space away from edge
-      y: Math.floor(Math.random() * (y2 - y1 - 1)) + y1 + 1, // keep 1 space away from edge
+      x: enemyX,
+      y: enemyY
     }
   };
 }

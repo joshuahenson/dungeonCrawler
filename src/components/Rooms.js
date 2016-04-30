@@ -14,8 +14,8 @@ const determineBackground = (visible, active) => {
 const Rooms = ({ rooms }) => (
   <div>
     {rooms.map((room, index) =>
-      <div>
-        <div key={index} className="room" style={{
+      <div key={index}>
+        <div className="room" style={{
           top: room.y1 * 10,
           left: room.x1 * 10,
           width: (room.x2 - room.x1) * 10,
@@ -23,7 +23,7 @@ const Rooms = ({ rooms }) => (
           backgroundColor: determineBackground(room.visible, room.active)
         }}
         />
-        <Enemy active={ room.active } status={ room.enemy } id={ index } />
+        <Enemy active={room.active} status={room.enemy} id={index} />
       </div>
     )}
   </div>
