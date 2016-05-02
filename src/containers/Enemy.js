@@ -13,7 +13,7 @@ export default class Enemy extends Component {
             opacity: this.props.status.alive && this.props.active ? 1 : 0
           }}
         >
-          <svg>
+          <svg width="10" height="10">
             <circle cx="5" cy="5" r="5" fill="purple" />
             <rect x="2" y="3" width="2" height="1" />
             <rect x="6" y="3" width="2" height="1" />
