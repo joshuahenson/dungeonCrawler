@@ -25,7 +25,7 @@ const Rooms = ({ rooms }) => (
         }}
         />
         <Enemy active={room.active} status={room.enemy} id={index} />
-        {room.health.available ? <Health health={room.health} /> : null}
+        {room.health.available ? <Health health={room.health} active={room.active} /> : null}
       </div>
     )}
   </div>

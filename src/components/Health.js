@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 
-const Health = ({ health }) => (
+const Health = ({ health, active }) => (
   <div className="absolute"
     style={{
       top: health.y * 10,
       left: health.x * 10,
+      opacity: active ? 1 : 0
     }}
   >
     <svg width="10" height="10">
@@ -16,7 +17,8 @@ const Health = ({ health }) => (
 );
 
 Health.propTypes = {
-  health: PropTypes.object
+  health: PropTypes.object,
+  active: PropTypes.bool
 };
 
 export default Health;
