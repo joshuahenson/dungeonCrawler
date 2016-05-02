@@ -6,20 +6,18 @@ import { bindActionCreators } from 'redux';
 export default class Enemy extends Component {
   render() {
     return (
-        <div className="absolute" // todo change or rename?
+        <svg width="10" height="10" className="absolute"
           style={{
             top: this.props.status.y * 10,
             left: this.props.status.x * 10,
             opacity: this.props.status.alive && this.props.active ? 1 : 0
           }}
         >
-          <svg width="10" height="10">
-            <circle cx="5" cy="5" r="5" fill="purple" />
-            <rect x="2" y="3" width="2" height="1" />
-            <rect x="6" y="3" width="2" height="1" />
-            <rect x="3" y="6" width="4" height="2" />
-          </svg>
-        </div>
+          <circle cx="5" cy="5" r="5" fill="purple" />
+          <rect x="2" y="3" width="2" height="1" />
+          <rect x="6" y="3" width="2" height="1" />
+          <rect x="3" y="6" width="4" height="2" />
+        </svg>
     );
   }
 }

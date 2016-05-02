@@ -1,19 +1,17 @@
 import React, { PropTypes } from 'react';
 
 const Health = ({ health, active }) => (
-  <div className="absolute"
+  <svg width="10" height="10" className="absolute"
     style={{
       top: health.y * 10,
       left: health.x * 10,
       opacity: active ? 1 : 0
     }}
   >
-    <svg width="10" height="10">
-      <rect x="0" y="0" width="10" height="10" fill="white" />
-      <rect x="2" y="4" width="6" height="2" fill="red" />
-      <rect x="4" y="2" width="2" height="6" fill="red" />
-    </svg>
-  </div>
+    <rect x="0" y="0" width="10" height="10" fill="white" />
+    <rect x="2" y="4" width="6" height="2" fill="red" />
+    <rect x="4" y="2" width="2" height="6" fill="red" />
+  </svg>
 );
 
 Health.propTypes = {
