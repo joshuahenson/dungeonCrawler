@@ -3,8 +3,8 @@ import React, { PropTypes } from 'react';
 const Health = ({ health, active }) => (
   <svg width="10" height="10" className="absolute"
     style={{
-      top: health.y * 10,
-      left: health.x * 10,
+      top: health.location.y * 10,
+      left: health.location.x * 10,
       opacity: active ? 1 : 0
     }}
   >

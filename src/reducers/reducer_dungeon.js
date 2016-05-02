@@ -2,7 +2,7 @@ const occupied = new Set(); // track spaces occupied by enemies and special item
 
 // create random space for health items
 const initiateHealth = (x1, x2, y1, y2) => {
-  if (Math.random() > 0.7) { // would i rather do n health and randomize placement?
+  if (Math.random() > 0) { // 0.7 or would i rather do n health and randomize placement?
     const x = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
     const y = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
     if (occupied.has(`${x}_${y}`)) {
@@ -11,15 +11,19 @@ const initiateHealth = (x1, x2, y1, y2) => {
       occupied.add(`${x}_${y}`);
       return {
         available: true,
-        x,
-        y
+        location: {
+          x,
+          y
+        }
       };
     }
   } // else return no health pack
   return {
     available: false,
-    x: -1,
-    y: -1
+    location: {
+      x: -1,
+      y: -1
+    }
   };
 };
 
@@ -166,6 +170,18 @@ const dungeon = (state = initialState, action) => {
           ...state.rooms.slice(0, action.index),
           Object.assign({}, state.rooms[action.index], {
             active: !state.rooms[action.index].active
+          }),
+          ...state.rooms.slice(action.index + 1)
+        ]
+      });
+    case 'FOUND_HEALTH':
+      return Object.assign({}, state, {
+        rooms: [
+          ...state.rooms.slice(0, action.index),
+          Object.assign({}, state.rooms[action.index], {
+            health: Object.assign({}, state.rooms[action.index].health, {
+              available: false
+            })
           }),
           ...state.rooms.slice(action.index + 1)
         ]

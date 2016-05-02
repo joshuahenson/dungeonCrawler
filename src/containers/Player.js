@@ -4,7 +4,8 @@ import {
   updatePosition,
   setHallVisibility,
   setRoomVisibility,
-  toggleActiveRoom
+  toggleActiveRoom,
+  foundHealth
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
@@ -15,6 +16,24 @@ export default class Player extends Component {
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.checkPosition.bind(this));
+  }
+  checkRoomVis(position, room, index) {
+    if (position.x >= room.x1 && position.x < room.x2 &&
+      position.y >= room.y1 && position.y < room.y2) { // player in room
+      if (!room.visible) { // player in room but room isn't visible
+        this.props.setRoomVisibility(index);
+      }
+      if (!room.active) { // player in room but room isn't active
+        this.props.toggleActiveRoom(index);
+      }
+    } else if (room.active) { // player not in room but room is active
+      this.props.toggleActiveRoom(index);
+    }
+  }
+  checkHealthPack(playerPos, healthPos, index) {
+    if (playerPos.x === healthPos.x && playerPos.y === healthPos.y) {
+      this.props.foundHealth(index);
+    }
   }
   checkStatus(position) {
     // check if position is in location and location is visible
@@ -31,17 +50,8 @@ export default class Player extends Component {
     // check rooms
     const rooms = this.props.rooms;
     for (let i = 0; i < rooms.length; i++) {
-      if (position.x >= rooms[i].x1 && position.x < rooms[i].x2 &&
-        position.y >= rooms[i].y1 && position.y < rooms[i].y2) { // player in room
-        if (!rooms[i].visible) { // player in room but room isn't visible
-          this.props.setRoomVisibility(i);
-        }
-        if (!rooms[i].active) { // player in room but room isn't active
-          this.props.toggleActiveRoom(i);
-        }
-      } else if (rooms[i].active) { // player not in room but room is active
-        this.props.toggleActiveRoom(i);
-      }
+      this.checkRoomVis(position, rooms[i], i);
+      this.checkHealthPack(position, rooms[i].health.location, i);
     }
   }
   checkPosition(key) {
@@ -90,7 +100,8 @@ Player.propTypes = {
   halls: PropTypes.array,
   setHallVisibility: PropTypes.func,
   setRoomVisibility: PropTypes.func,
-  toggleActiveRoom: PropTypes.func
+  toggleActiveRoom: PropTypes.func,
+  foundHealth: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -107,7 +118,8 @@ function mapDispatchToProps(dispatch) {
     updatePosition,
     setHallVisibility,
     setRoomVisibility,
-    toggleActiveRoom
+    toggleActiveRoom,
+    foundHealth
   }, dispatch);
 }
 

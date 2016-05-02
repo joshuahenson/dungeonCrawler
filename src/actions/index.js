@@ -25,3 +25,10 @@ export function toggleActiveRoom(index) {
     index
   };
 }
+
+export function foundHealth(index) {
+  return {
+    type: 'FOUND_HEALTH',
+    index
+  };
+}

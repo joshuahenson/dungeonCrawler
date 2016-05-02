@@ -5,9 +5,9 @@ import Health from './Health';
 const determineBackground = (visible, active) => {
   if (visible) {
     if (active) {
-      return 'rgba(255, 255, 0, 0.5)';
+      return 'rgba(255, 255, 0, 0.4)';
     } // else not active
-    return 'rgba(255, 255, 0, 0.3)';
+    return 'rgba(255, 255, 0, 0.1)';
   } // else not visible
   return 'black';
 };
