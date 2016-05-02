@@ -67,7 +67,7 @@ export default class Player extends Component {
   }
   render() {
     return (
-        <div className="player"
+        <div className="absolute"
           style={{
             top: this.props.location.y * 10,
             left: this.props.location.x * 10,

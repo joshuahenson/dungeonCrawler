@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 export default class Enemy extends Component {
   render() {
     return (
-        <div className="player" // todo change or rename?
+        <div className="absolute" // todo change or rename?
           style={{
             top: this.props.status.y * 10,
             left: this.props.status.x * 10,

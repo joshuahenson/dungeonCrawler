@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Enemy from '../containers/Enemy';
+import Health from './Health';
 
 const determineBackground = (visible, active) => {
   if (visible) {
@@ -24,6 +25,7 @@ const Rooms = ({ rooms }) => (
         }}
         />
         <Enemy active={room.active} status={room.enemy} id={index} />
+        {room.health.available ? <Health health={room.health} /> : null}
       </div>
     )}
   </div>
