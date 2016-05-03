@@ -1,10 +1,6 @@
-
-
-const initialState = {level: 0};
-for (let i = 0; i < 4; i++) {
-  
+const initialState = { level: 0 };
+for (let index = 0; index < 4; index++) {
   const occupied = new Set(); // track spaces occupied by enemies and special items
-
   // create random space for health items
   const initiateHealth = (x1, x2, y1, y2) => {
     if (Math.random() > 0) { // 0.7 or would i rather do n health and randomize placement?
@@ -31,26 +27,24 @@ for (let i = 0; i < 4; i++) {
       }
     };
   };
-  
   // returns an array of 9 rooms randomly sized in a 3x3 grid
   // range must cover middle of grid square to simplify aligning hallways
   const rooms = [];
-  
   for (let i = 0; i < 9; i++) {
     const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34); // ceil to keep off left border
     const x2 = (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34);
     const y1 = Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24);
     const y2 = (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24);
-    const enemyX = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
-    const enemyY = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
-    occupied.add(`${enemyX}_${enemyY}`); // string because there is no real .has() ability on objects
+    const enemyX = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1;
+    const enemyY = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1;
+    occupied.add(`${enemyX}_${enemyY}`); // string because there is no .has() ability on objects
     rooms[i] = {
       x1,
       x2,
       y1,
       y2,
-      visible: true,
-      active: true,
+      visible: false,
+      active: false,
       enemy: {
         alive: true, // todo random whether room has enemy
         type: 'generic', // todo assign type?
@@ -60,17 +54,14 @@ for (let i = 0; i < 4; i++) {
       health: initiateHealth(x1, x2, y1, y2)
     };
   }
-  
-  
   // determines order that halls connect rooms
   const hallwayOrder = [
     [0, 1, 2, 5, 8, 7, 6, 3, 4],
     [0, 1, 2, 5, 4, 3, 6, 7, 8],
     [0, 1, 2, 5, 8, 7, 6, 3, 4],
     [0, 1, 2, 5, 4, 3, 6, 7, 8]
-    ];
-  const hallOrder = hallwayOrder[i];
-  
+  ];
+  const hallOrder = hallwayOrder[index];
   // finds the shared horizontal range between two rooms
   // and returns a random number in that range
   const findSharedY = (top1, top2, bottom1, bottom2) => {
@@ -79,7 +70,6 @@ for (let i = 0; i < 4; i++) {
     const rand = Math.floor(Math.random() * (bottom - top)) + top;
     return rand;
   };
-  
   // finds the shared vertical range between two rooms
   // and returns a random number in that range
   const findSharedX = (left1, left2, right1, right2) => {
@@ -88,7 +78,6 @@ for (let i = 0; i < 4; i++) {
     const rand = Math.floor(Math.random() * (right - left)) + left;
     return rand;
   };
-  
   // returns an array of hallways that connect rooms
   const halls = [];
   for (let i = 0; i < hallOrder.length - 1; i++) {
@@ -114,7 +103,6 @@ for (let i = 0; i < 4; i++) {
       };
     }
   }
-  
   // initiate board with 0's to start
   const board = [];
   for (let i = 0; i < 100; i++) {
@@ -124,7 +112,6 @@ for (let i = 0; i < 4; i++) {
     }
     board.push(row);
   }
-  
   // inserts 1 in spaces covered by rooms to show as valid space for movement
   for (let i = 0; i < 100; i++) {
     for (let j = 0; j < 70; j++) {
@@ -135,7 +122,6 @@ for (let i = 0; i < 4; i++) {
       }
     }
   }
-  
   // inserts 1 in spaces covered by halls to show as valid space for movement
   for (let i = 0; i < 100; i++) {
     for (let j = 0; j < 70; j++) {
@@ -146,10 +132,10 @@ for (let i = 0; i < 4; i++) {
       }
     }
   }
-  initialState[i] = {
-  board,
-  rooms,
-  halls
+  initialState[index] = {
+    board,
+    rooms,
+    halls
   };
 }
 
@@ -157,45 +143,53 @@ const dungeon = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_HALL_VISIBILITY':
       return Object.assign({}, state, {
-        halls: [
-          ...state.halls.slice(0, action.index),
-          Object.assign({}, state.halls[action.index], {
-            visible: true
-          }),
-          ...state.halls.slice(action.index + 1)
-        ]
+        [action.level]: Object.assign({}, state[action.level], {
+          halls: [
+            ...state[action.level].halls.slice(0, action.index),
+            Object.assign({}, state[action.level].halls[action.index], {
+              visible: true
+            }),
+            ...state[action.level].halls.slice(action.index + 1)
+          ]
+        })
       });
     case 'SET_ROOM_VISIBILITY':
       return Object.assign({}, state, {
-        rooms: [
-          ...state.rooms.slice(0, action.index),
-          Object.assign({}, state.rooms[action.index], {
-            visible: true
-          }),
-          ...state.rooms.slice(action.index + 1)
-        ]
+        [action.level]: Object.assign({}, state[action.level], {
+          rooms: [
+            ...state[action.level].rooms.slice(0, action.index),
+            Object.assign({}, state[action.level].rooms[action.index], {
+              visible: true
+            }),
+            ...state[action.level].rooms.slice(action.index + 1)
+          ]
+        })
       });
     case 'TOGGLE_ACTIVE_ROOM':
       return Object.assign({}, state, {
-        rooms: [
-          ...state.rooms.slice(0, action.index),
-          Object.assign({}, state.rooms[action.index], {
-            active: !state.rooms[action.index].active
-          }),
-          ...state.rooms.slice(action.index + 1)
-        ]
+        [action.level]: Object.assign({}, state[action.level], {
+          rooms: [
+            ...state[action.level].rooms.slice(0, action.index),
+            Object.assign({}, state[action.level].rooms[action.index], {
+              active: !state[action.level].rooms[action.index].active
+            }),
+            ...state[action.level].rooms.slice(action.index + 1)
+          ]
+        })
       });
     case 'FOUND_HEALTH':
       return Object.assign({}, state, {
-        rooms: [
-          ...state.rooms.slice(0, action.index),
-          Object.assign({}, state.rooms[action.index], {
-            health: Object.assign({}, state.rooms[action.index].health, {
-              available: false
-            })
-          }),
-          ...state.rooms.slice(action.index + 1)
-        ]
+        [action.level]: Object.assign({}, state[action.level], {
+          rooms: [
+            ...state[action.level].rooms.slice(0, action.index),
+            Object.assign({}, state[action.level].rooms[action.index], {
+              health: Object.assign({}, state[action.level].rooms[action.index].health, {
+                available: false
+              })
+            }),
+            ...state[action.level].rooms.slice(action.index + 1)
+          ]
+        })
       });
     default:
       return state;

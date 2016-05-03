@@ -5,30 +5,34 @@ export function updatePosition(position) {
   };
 }
 
-export function setHallVisibility(index) {
+export function setHallVisibility(index, level) {
   return {
     type: 'SET_HALL_VISIBILITY',
-    index
+    index,
+    level
   };
 }
 
-export function setRoomVisibility(index) {
+export function setRoomVisibility(index, level) {
   return {
     type: 'SET_ROOM_VISIBILITY',
-    index
+    index,
+    level
   };
 }
 
-export function toggleActiveRoom(index) {
+export function toggleActiveRoom(index, level) {
   return {
     type: 'TOGGLE_ACTIVE_ROOM',
-    index
+    index,
+    level
   };
 }
 
-export function foundHealth(index) {
+export function foundHealth(index, level) {
   return {
     type: 'FOUND_HEALTH',
-    index
+    index,
+    level
   };
 }

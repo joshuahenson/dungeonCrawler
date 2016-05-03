@@ -20,7 +20,8 @@ add levels
 dungeon levels as parallel to player level: unable to advance to next dungeon level until certain xp?
 defeating enemies gives you part of a key to open the gate to the next level?
 OR
-
+skill increases allows player ability to beat players at advanced levels
+  can go back to previous level to continue gaining skill
 
 
 

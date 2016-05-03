@@ -17,48 +17,48 @@ export default class Player extends Component {
   componentWillUnmount() {
     window.removeEventListener('keydown', this.checkPosition.bind(this));
   }
-  checkRoomVis(position, room, index) {
+  checkRoomVis(position, room, index, level) {
     if (position.x >= room.x1 && position.x < room.x2 &&
       position.y >= room.y1 && position.y < room.y2) { // player in room
       if (!room.visible) { // player in room but room isn't visible
-        this.props.setRoomVisibility(index);
+        this.props.setRoomVisibility(index, level);
       }
       if (!room.active) { // player in room but room isn't active
-        this.props.toggleActiveRoom(index);
+        this.props.toggleActiveRoom(index, level);
       }
     } else if (room.active) { // player not in room but room is active
-      this.props.toggleActiveRoom(index);
+      this.props.toggleActiveRoom(index, level);
     }
   }
-  checkHealthPack(playerPos, healthPos, index) {
+  checkHealthPack(playerPos, healthPos, index, level) {
     if (playerPos.x === healthPos.x && playerPos.y === healthPos.y) {
-      this.props.foundHealth(index);
+      this.props.foundHealth(index, level);
     }
   }
-  checkStatus(position) {
+  checkStatus(position, level) {
     // check if position is in location and location is visible
     // check halls
-    const halls = this.props.halls;
+    const halls = this.props.dungeon[this.props.level].halls;
     for (let i = 0; i < halls.length; i++) {
       if (!halls[i].visible && position.x >= halls[i].x1 &&
         position.x < halls[i].x2 && position.y === halls[i].y1 ||
         !halls[i].visible && position.y >= halls[i].y1 &&
         position.y < halls[i].y2 && position.x === halls[i].x1) {
-        this.props.setHallVisibility(i);
+        this.props.setHallVisibility(i, level);
       }
     }
     // check rooms
-    const rooms = this.props.rooms;
+    const rooms = this.props.dungeon[level].rooms;
     for (let i = 0; i < rooms.length; i++) {
-      this.checkRoomVis(position, rooms[i], i);
-      this.checkHealthPack(position, rooms[i].health.location, i);
+      this.checkRoomVis(position, rooms[i], i, level);
+      this.checkHealthPack(position, rooms[i].health.location, i, level);
     }
   }
   checkPosition(key) {
     // check key direction and whether board is open
     // todo compare to enemy location
     let newPosition = null;
-    const board = this.props.board;
+    const board = this.props.dungeon[this.props.level].board;
     const x = this.props.location.x;
     const y = this.props.location.y;
     if (key.keyCode === 37 && board[x - 1][y]) { // left
@@ -72,7 +72,7 @@ export default class Player extends Component {
     }
     if (newPosition) {
       this.props.updatePosition(newPosition);
-      this.checkStatus(newPosition);
+      this.checkStatus(newPosition, this.props.level);
     }
   }
   render() {
@@ -95,9 +95,8 @@ export default class Player extends Component {
 Player.propTypes = {
   location: PropTypes.object,
   updatePosition: PropTypes.func,
-  board: PropTypes.array,
-  rooms: PropTypes.array,
-  halls: PropTypes.array,
+  dungeon: PropTypes.object,
+  level: PropTypes.number,
   setHallVisibility: PropTypes.func,
   setRoomVisibility: PropTypes.func,
   toggleActiveRoom: PropTypes.func,
@@ -107,9 +106,8 @@ Player.propTypes = {
 function mapStateToProps(state) {
   return {
     location: state.player.location,
-    board: state.dungeon.board,
-    rooms: state.dungeon.rooms,
-    halls: state.dungeon.halls
+    dungeon: state.dungeon,
+    level: state.dungeon.level
   };
 }
 
