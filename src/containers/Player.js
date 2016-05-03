@@ -5,14 +5,14 @@ import {
   setHallVisibility,
   setRoomVisibility,
   toggleActiveRoom,
-  foundHealth
+  foundHealth,
+  foundStairsDown
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 export default class Player extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.checkPosition.bind(this));
-    this.props.updatePosition({ x: 16, y: 10 }); // placeholder to randomize later
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.checkPosition.bind(this));
@@ -35,6 +35,12 @@ export default class Player extends Component {
       this.props.foundHealth(index, level);
     }
   }
+  checkStairsDown(playerPos, stairsPos) {
+    if (playerPos.x === stairsPos.x && playerPos.y === stairsPos.y) {
+      this.props.foundStairsDown();
+      this.props.updatePosition({ x: 12, y: 9 }); // todo update temp location
+    }
+  }
   checkStatus(position, level) {
     // check if position is in location and location is visible
     // check halls
@@ -53,6 +59,7 @@ export default class Player extends Component {
       if (rooms.hasOwnProperty(i)) {
         this.checkRoomVis(position, rooms[i], i, level);
         this.checkHealthPack(position, rooms[i].health.location, i, level);
+        this.checkStairsDown(position, rooms[i].stairsDown.location);
       }
     }
   }
@@ -102,7 +109,8 @@ Player.propTypes = {
   setHallVisibility: PropTypes.func,
   setRoomVisibility: PropTypes.func,
   toggleActiveRoom: PropTypes.func,
-  foundHealth: PropTypes.func
+  foundHealth: PropTypes.func,
+  foundStairsDown: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -119,7 +127,8 @@ function mapDispatchToProps(dispatch) {
     setHallVisibility,
     setRoomVisibility,
     toggleActiveRoom,
-    foundHealth
+    foundHealth,
+    foundStairsDown
   }, dispatch);
 }
 

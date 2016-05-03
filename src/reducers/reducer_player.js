@@ -1,12 +1,12 @@
 const initialState = {
   location: {
-    x: null,
-    y: null
+    x: 49,
+    y: 34
   },
   weapon: 'club',
   health: 10,
   xp: 0,
-  level: 1
+  skill: 1
 };
 
 const player = (state = initialState, action) => {

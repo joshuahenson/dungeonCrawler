@@ -1,66 +1,134 @@
-const initialState = { level: 0 };
-for (let index = 0; index < 4; index++) {
-  const occupied = new Set(); // track spaces occupied by enemies and special items
-  // create random space for health items
-  const initiateHealth = (x1, x2, y1, y2) => {
-    if (Math.random() > 0) { // 0.7 or would i rather do n health and randomize placement?
-      const x = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
-      const y = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
-      if (occupied.has(`${x}_${y}`)) {
-        initiateHealth(x1, x2, y1, y2);
-      } else {
-        occupied.add(`${x}_${y}`);
-        return {
-          available: true,
-          location: {
-            x,
-            y
-          }
-        };
-      }
-    } // else return no health pack
-    return {
-      available: false,
-      location: {
-        x: -1,
-        y: -1
-      }
-    };
+const initialState = { level: 1 }; // todo turn back to 0
+let occupied = new Set(); // track spaces occupied by enemies and special items
+// determines order that halls connect rooms
+const hallwayOrder = [
+  [],
+  [0, 1, 2, 5, 4, 3, 6, 7, 8],
+  [0, 1, 2, 5, 8, 7, 6, 3, 4],
+  [0, 1, 2, 5, 4, 3, 6, 7, 8]
+];
+const stairSelectRoom = [
+  0,
+  Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9)
+];
+// create random space for health items
+const initiateHealth = (x1, x2, y1, y2) => {
+  if (Math.random() > 0.7) { // 0.7 or would i rather do n health and randomize placement?
+    const x = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
+    const y = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
+    if (occupied.has(`${x}_${y}`)) {
+      initiateHealth(x1, x2, y1, y2);
+    } else {
+      occupied.add(`${x}_${y}`);
+      return {
+        available: true,
+        location: {
+          x,
+          y
+        }
+      };
+    }
+  } // else return no health pack
+  return {
+    available: false,
+    location: {
+      x: -1,
+      y: -1
+    }
   };
+};
+// create random location for stairs going down
+const initiateStairsDown = (x1, x2, y1, y2, level, roomIndex) => {
+  if (level < 3 && roomIndex === stairSelectRoom[level]) { // not called on level[0]
+    const x = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
+    const y = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
+    if (occupied.has(`${x}_${y}`)) {
+      initiateStairsDown(x1, x2, y1, y2, level);
+    } else {
+      occupied.add(`${x}_${y}`);
+      return {
+        present: true,
+        location: {
+          x,
+          y
+        },
+      };
+    }
+  } // else return no stairs
+  return {
+    present: false,
+    location: {
+      x: -1,
+      y: -1
+    },
+  };
+};
+// **********************************
+// loop to create dungeon levels to populate state
+// **********************************
+for (let index = 0; index < 4; index++) {
+  occupied = new Set();
   // returns an array of 9 rooms randomly sized in a 3x3 grid
   // range must cover middle of grid square to simplify aligning hallways
   const rooms = {};
-  for (let i = 0; i < 9; i++) {
-    const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34); // ceil to keep off left border
-    const x2 = (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34);
-    const y1 = Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24);
-    const y2 = (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24);
-    const enemyX = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1;
-    const enemyY = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1;
-    occupied.add(`${enemyX}_${enemyY}`); // string because there is no .has() ability on objects
-    rooms[i] = {
-      x1,
-      x2,
-      y1,
-      y2,
-      visible: false,
-      active: false,
+  if (index > 0) {
+    for (let i = 0; i < 9; i++) {
+      const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34); // ceil to keep off left border
+      const x2 = (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34);
+      const y1 = Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24);
+      const y2 = (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24);
+      const enemyX = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1;
+      const enemyY = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1;
+      occupied.add(`${enemyX}_${enemyY}`); // string because there is no .has() ability on objects
+      rooms[i] = {
+        x1,
+        x2,
+        y1,
+        y2,
+        visible: true,
+        active: true,
+        enemy: {
+          alive: true, // todo random whether room has enemy
+          type: 'generic', // todo assign type?
+          x: enemyX,
+          y: enemyY
+        },
+        health: initiateHealth(x1, x2, y1, y2),
+        stairsDown: initiateStairsDown(x1, x2, y1, y2, index, i)
+      };
+    }
+  } else {
+    rooms[0] = {
+      x1: 20,
+      x2: 80,
+      y1: 20,
+      y2: 50,
+      visible: true,
+      active: true,
       enemy: {
-        alive: true, // todo random whether room has enemy
-        type: 'generic', // todo assign type?
-        x: enemyX,
-        y: enemyY
+        alive: false,
+        type: 'generic',
+        x: -1,
+        y: -1
       },
-      health: initiateHealth(x1, x2, y1, y2)
+      health: {
+        available: false,
+        location: {
+          x: -1,
+          y: -1
+        }
+      },
+      stairsDown: {
+        present: true,
+        location: {
+          x: 50,
+          y: 34
+        },
+      }
     };
   }
-  // determines order that halls connect rooms
-  const hallwayOrder = [
-    [0, 1, 2, 5, 8, 7, 6, 3, 4],
-    [0, 1, 2, 5, 4, 3, 6, 7, 8],
-    [0, 1, 2, 5, 8, 7, 6, 3, 4],
-    [0, 1, 2, 5, 4, 3, 6, 7, 8]
-  ];
   const hallOrder = hallwayOrder[index];
   // finds the shared horizontal range between two rooms
   // and returns a random number in that range
@@ -137,7 +205,7 @@ for (let index = 0; index < 4; index++) {
     rooms,
     halls
   };
-}
+} // end initiation loop
 
 const dungeon = (state = initialState, action) => {
   switch (action.type) {
@@ -182,6 +250,10 @@ const dungeon = (state = initialState, action) => {
             })
           })
         })
+      });
+    case 'FOUND_STAIRS_DOWN':
+      return Object.assign({}, state, {
+        level: state.level + 1
       });
     default:
       return state;

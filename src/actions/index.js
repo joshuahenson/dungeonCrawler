@@ -36,3 +36,9 @@ export function foundHealth(index, level) {
     level
   };
 }
+
+export function foundStairsDown() {
+  return {
+    type: 'FOUND_STAIRS_DOWN'
+  };
+}
