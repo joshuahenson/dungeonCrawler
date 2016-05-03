@@ -29,7 +29,7 @@ for (let index = 0; index < 4; index++) {
   };
   // returns an array of 9 rooms randomly sized in a 3x3 grid
   // range must cover middle of grid square to simplify aligning hallways
-  const rooms = [];
+  const rooms = {};
   for (let i = 0; i < 9; i++) {
     const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34); // ceil to keep off left border
     const x2 = (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34);
@@ -43,7 +43,7 @@ for (let index = 0; index < 4; index++) {
       x2,
       y1,
       y2,
-      visible: false,
+      visible: true,
       active: false,
       enemy: {
         alive: true, // todo random whether room has enemy
@@ -115,7 +115,7 @@ for (let index = 0; index < 4; index++) {
   // inserts 1 in spaces covered by rooms to show as valid space for movement
   for (let i = 0; i < 100; i++) {
     for (let j = 0; j < 70; j++) {
-      for (let k = 0, len = rooms.length; k < len; k++) {
+      for (let k = 0, len = Object.keys(rooms).length; k < len; k++) {
         if (i >= rooms[k].x1 && i < rooms[k].x2 && j >= rooms[k].y1 && j < rooms[k].y2) {
           board[i][j] = 1;
         }
@@ -153,44 +153,42 @@ const dungeon = (state = initialState, action) => {
           ]
         })
       });
-    case 'SET_ROOM_VISIBILITY':
-      return Object.assign({}, state, {
-        [action.level]: Object.assign({}, state[action.level], {
-          rooms: [
-            ...state[action.level].rooms.slice(0, action.index),
-            Object.assign({}, state[action.level].rooms[action.index], {
-              visible: true
-            }),
-            ...state[action.level].rooms.slice(action.index + 1)
-          ]
-        })
-      });
+    // case 'SET_ROOM_VISIBILITY':
+    //   return Object.assign({}, state, {
+    //     [action.level]: Object.assign({}, state[action.level], {
+    //       rooms: [
+    //         ...state[action.level].rooms.slice(0, action.index),
+    //         Object.assign({}, state[action.level].rooms[action.index], {
+    //           visible: true
+    //         }),
+    //         ...state[action.level].rooms.slice(action.index + 1)
+    //       ]
+    //     })
+    //   });
     case 'TOGGLE_ACTIVE_ROOM':
       return Object.assign({}, state, {
         [action.level]: Object.assign({}, state[action.level], {
-          rooms: [
-            ...state[action.level].rooms.slice(0, action.index),
-            Object.assign({}, state[action.level].rooms[action.index], {
+          rooms: Object.assign({}, state[action.level].rooms, {
+            [action.index]: Object.assign({}, state[action.level].rooms[action.index], {
               active: !state[action.level].rooms[action.index].active
-            }),
-            ...state[action.level].rooms.slice(action.index + 1)
-          ]
+            })
+          })
         })
       });
-    case 'FOUND_HEALTH':
-      return Object.assign({}, state, {
-        [action.level]: Object.assign({}, state[action.level], {
-          rooms: [
-            ...state[action.level].rooms.slice(0, action.index),
-            Object.assign({}, state[action.level].rooms[action.index], {
-              health: Object.assign({}, state[action.level].rooms[action.index].health, {
-                available: false
-              })
-            }),
-            ...state[action.level].rooms.slice(action.index + 1)
-          ]
-        })
-      });
+    // case 'FOUND_HEALTH':
+    //   return Object.assign({}, state, {
+    //     [action.level]: Object.assign({}, state[action.level], {
+    //       rooms: [
+    //         ...state[action.level].rooms.slice(0, action.index),
+    //         Object.assign({}, state[action.level].rooms[action.index], {
+    //           health: Object.assign({}, state[action.level].rooms[action.index].health, {
+    //             available: false
+    //           })
+    //         }),
+    //         ...state[action.level].rooms.slice(action.index + 1)
+    //       ]
+    //     })
+    //   });
     default:
       return state;
   }

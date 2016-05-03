@@ -49,9 +49,11 @@ export default class Player extends Component {
     }
     // check rooms
     const rooms = this.props.dungeon[level].rooms;
-    for (let i = 0; i < rooms.length; i++) {
-      this.checkRoomVis(position, rooms[i], i, level);
-      this.checkHealthPack(position, rooms[i].health.location, i, level);
+    for (const i in rooms) {
+      if (rooms.hasOwnProperty(i)) {
+        this.checkRoomVis(position, rooms[i], i, level);
+        this.checkHealthPack(position, rooms[i].health.location, i, level);
+      }
     }
   }
   checkPosition(key) {

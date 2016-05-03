@@ -14,7 +14,7 @@ const determineBackground = (visible, active) => {
 
 const Rooms = ({ rooms }) => (
   <div>
-    {rooms.map((room, index) =>
+    {Object.values(rooms).map((room, index) =>
       <div key={index}>
         <div className="room" style={{
           top: room.y1 * 10,
@@ -32,7 +32,7 @@ const Rooms = ({ rooms }) => (
 );
 
 Rooms.propTypes = {
-  rooms: PropTypes.array
+  rooms: PropTypes.object
 };
 
 export default Rooms;
