@@ -3,15 +3,13 @@ import { connect } from 'react-redux';
 import Player from './Player';
 import Rooms from '../components/Rooms';
 import Halls from '../components/Halls';
-// import { sampleAction } from '../actions/index';
-// import { bindActionCreators } from 'redux';
 
 export default class Dungeon extends Component {
   render() {
     return (
       <div className="dungeon">
-        <Rooms rooms={ this.props.rooms } />
-        <Halls halls={ this.props.halls } />
+        <Rooms rooms={ this.props.dungeon[this.props.level].rooms } />
+        <Halls halls={ this.props.dungeon[this.props.level].halls } />
         <Player />
       </div>
     );
@@ -19,21 +17,15 @@ export default class Dungeon extends Component {
 }
 
 Dungeon.propTypes = {
-  rooms: PropTypes.array,
-  halls: PropTypes.array,
-  SampleAction: PropTypes.func
+  dungeon: PropTypes.object,
+  level: PropTypes.number,
 };
 
 function mapStateToProps(state) {
   return {
-    rooms: state.dungeon.rooms,
-    halls: state.dungeon.halls
+    dungeon: state.dungeon,
+    level: state.dungeon.level
   };
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ sampleAction }, dispatch);
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Dungeon);
 export default connect(mapStateToProps)(Dungeon);
