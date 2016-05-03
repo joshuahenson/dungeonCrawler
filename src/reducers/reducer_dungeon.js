@@ -43,7 +43,7 @@ for (let index = 0; index < 4; index++) {
       x2,
       y1,
       y2,
-      visible: true,
+      visible: false,
       active: false,
       enemy: {
         alive: true, // todo random whether room has enemy
@@ -153,18 +153,16 @@ const dungeon = (state = initialState, action) => {
           ]
         })
       });
-    // case 'SET_ROOM_VISIBILITY':
-    //   return Object.assign({}, state, {
-    //     [action.level]: Object.assign({}, state[action.level], {
-    //       rooms: [
-    //         ...state[action.level].rooms.slice(0, action.index),
-    //         Object.assign({}, state[action.level].rooms[action.index], {
-    //           visible: true
-    //         }),
-    //         ...state[action.level].rooms.slice(action.index + 1)
-    //       ]
-    //     })
-    //   });
+    case 'SET_ROOM_VISIBILITY':
+      return Object.assign({}, state, {
+        [action.level]: Object.assign({}, state[action.level], {
+          rooms: Object.assign({}, state[action.level].rooms, {
+            [action.index]: Object.assign({}, state[action.level].rooms[action.index], {
+              visible: true
+            })
+          })
+        })
+      });
     case 'TOGGLE_ACTIVE_ROOM':
       return Object.assign({}, state, {
         [action.level]: Object.assign({}, state[action.level], {
@@ -175,20 +173,18 @@ const dungeon = (state = initialState, action) => {
           })
         })
       });
-    // case 'FOUND_HEALTH':
-    //   return Object.assign({}, state, {
-    //     [action.level]: Object.assign({}, state[action.level], {
-    //       rooms: [
-    //         ...state[action.level].rooms.slice(0, action.index),
-    //         Object.assign({}, state[action.level].rooms[action.index], {
-    //           health: Object.assign({}, state[action.level].rooms[action.index].health, {
-    //             available: false
-    //           })
-    //         }),
-    //         ...state[action.level].rooms.slice(action.index + 1)
-    //       ]
-    //     })
-    //   });
+    case 'FOUND_HEALTH':
+      return Object.assign({}, state, {
+        [action.level]: Object.assign({}, state[action.level], {
+          rooms: Object.assign({}, state[action.level].rooms, {
+            [action.index]: Object.assign({}, state[action.level].rooms[action.index], {
+              health: Object.assign({}, state[action.level].rooms[action.index].health, {
+                available: false
+              })
+            })
+          })
+        })
+      });
     default:
       return state;
   }
