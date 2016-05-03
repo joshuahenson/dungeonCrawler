@@ -39,7 +39,7 @@ export default class Player extends Component {
     // check if position is in location and location is visible
     // check halls
     const halls = this.props.dungeon[this.props.level].halls;
-    for (let i = 0; i < halls.length; i++) {
+    for (const i in halls) {
       if (!halls[i].visible && position.x >= halls[i].x1 &&
         position.x < halls[i].x2 && position.y === halls[i].y1 ||
         !halls[i].visible && position.y >= halls[i].y1 &&

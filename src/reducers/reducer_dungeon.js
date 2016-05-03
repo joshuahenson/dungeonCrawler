@@ -79,7 +79,7 @@ for (let index = 0; index < 4; index++) {
     return rand;
   };
   // returns an array of hallways that connect rooms
-  const halls = [];
+  const halls = {};
   for (let i = 0; i < hallOrder.length - 1; i++) {
     if (Math.abs(hallOrder[i] - hallOrder[i + 1]) === 1) { // horizontal hallway
       const sharedY = findSharedY(rooms[hallOrder[i]].y1,
@@ -125,7 +125,7 @@ for (let index = 0; index < 4; index++) {
   // inserts 1 in spaces covered by halls to show as valid space for movement
   for (let i = 0; i < 100; i++) {
     for (let j = 0; j < 70; j++) {
-      for (let k = 0, len = halls.length; k < len; k++) {
+      for (let k = 0, len = Object.keys(halls).length; k < len; k++) {
         if (i >= halls[k].x1 && i <= halls[k].x2 && j >= halls[k].y1 && j <= halls[k].y2) {
           board[i][j] = 1;
         }
@@ -144,13 +144,11 @@ const dungeon = (state = initialState, action) => {
     case 'SET_HALL_VISIBILITY':
       return Object.assign({}, state, {
         [action.level]: Object.assign({}, state[action.level], {
-          halls: [
-            ...state[action.level].halls.slice(0, action.index),
-            Object.assign({}, state[action.level].halls[action.index], {
+          halls: Object.assign({}, state[action.level].halls, {
+            [action.index]: Object.assign({}, state[action.level].halls[action.index], {
               visible: true
-            }),
-            ...state[action.level].halls.slice(action.index + 1)
-          ]
+            })
+          })
         })
       });
     case 'SET_ROOM_VISIBILITY':

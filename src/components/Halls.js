@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const Halls = ({ halls }) => (
   <div>
-    {halls.map((hall, index) =>
+    {Object.values(halls).map((hall, index) =>
       <div key={index} className="hall" style={{
         top: hall.y1 * 10,
         left: hall.x1 * 10,
@@ -16,7 +16,7 @@ const Halls = ({ halls }) => (
 );
 
 Halls.propTypes = {
-  halls: PropTypes.array
+  halls: PropTypes.object
 };
 
 export default Halls;
