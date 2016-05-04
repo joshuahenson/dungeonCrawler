@@ -1,4 +1,4 @@
-const initialState = { level: 0 };
+const initialState = { level: 1 };
 let occupied = new Set(); // track spaces occupied by enemies and special items
 // determines order that halls connect rooms
 // create iife shuffled hall array with get method
@@ -87,10 +87,10 @@ for (let index = 0; index < 4; index++) {
   const rooms = {};
   if (index > 0) {
     for (let i = 0; i < 9; i++) {
-      const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34); // ceil to keep off left border
+      const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34);
       const x2 = (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34);
-      const y1 = Math.floor(Math.random() * 9) + (Math.floor(i / 3) * 24);
-      const y2 = (22 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24);
+      const y1 = Math.ceil(Math.random() * 9) + (Math.floor(i / 3) * 24);
+      const y2 = (21 - Math.floor(Math.random() * 9)) + (Math.floor(i / 3) * 24);
       const enemyX = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1;
       const enemyY = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1;
       occupied.add(`${enemyX}_${enemyY}`); // string because there is no .has() ability on objects
