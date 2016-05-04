@@ -42,3 +42,9 @@ export function foundStairsDown() {
     type: 'FOUND_STAIRS_DOWN'
   };
 }
+
+export function foundStairsUp() {
+  return {
+    type: 'FOUND_STAIRS_UP'
+  };
+}

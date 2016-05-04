@@ -6,7 +6,8 @@ import {
   setRoomVisibility,
   toggleActiveRoom,
   foundHealth,
-  foundStairsDown
+  foundStairsDown,
+  foundStairsUp
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
@@ -37,8 +38,18 @@ export default class Player extends Component {
   }
   checkStairsDown(playerPos, stairsPos) {
     if (playerPos.x === stairsPos.x && playerPos.y === stairsPos.y) {
+      const upLevel = this.props.level + 1;
+      const room = this.props.dungeon.stairsUpRooms[upLevel];
       this.props.foundStairsDown();
-      this.props.updatePosition({ x: 12, y: 9 }); // todo update temp location
+      this.props.updatePosition(this.props.dungeon[upLevel].rooms[room].stairsUp.location);
+    }
+  }
+  checkStairsUp(playerPos, stairsPos) {
+    if (playerPos.x === stairsPos.x && playerPos.y === stairsPos.y) {
+      const downLevel = this.props.level - 1;
+      const room = this.props.dungeon.stairsDownRooms[downLevel];
+      this.props.foundStairsUp();
+      this.props.updatePosition(this.props.dungeon[downLevel].rooms[room].stairsDown.location);
     }
   }
   checkStatus(position, level) {
@@ -60,6 +71,7 @@ export default class Player extends Component {
         this.checkRoomVis(position, rooms[i], i, level);
         this.checkHealthPack(position, rooms[i].health.location, i, level);
         this.checkStairsDown(position, rooms[i].stairsDown.location);
+        this.checkStairsUp(position, rooms[i].stairsUp.location);
       }
     }
   }
@@ -110,7 +122,8 @@ Player.propTypes = {
   setRoomVisibility: PropTypes.func,
   toggleActiveRoom: PropTypes.func,
   foundHealth: PropTypes.func,
-  foundStairsDown: PropTypes.func
+  foundStairsDown: PropTypes.func,
+  foundStairsUp: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -128,7 +141,8 @@ function mapDispatchToProps(dispatch) {
     setRoomVisibility,
     toggleActiveRoom,
     foundHealth,
-    foundStairsDown
+    foundStairsDown,
+    foundStairsUp
   }, dispatch);
 }
 

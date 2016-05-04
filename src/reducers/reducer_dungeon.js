@@ -1,15 +1,25 @@
 // determine which room will have stairs going down.
+// const stairsDownRooms = [
+//   0, // only room on level
+//   Math.floor(Math.random() * 9),
+//   Math.floor(Math.random() * 9),
+//   null
+// ];
+// const stairsUpRooms = [
+//   null,
+//   Math.floor(Math.random() * 9),
+//   Math.floor(Math.random() * 9),
+//   Math.floor(Math.random() * 9)
+// ];
 const stairsDownRooms = [
   0, // only room on level
-  Math.floor(Math.random() * 9),
-  Math.floor(Math.random() * 9),
+  4,
+  4,
   null
 ];
 const stairsUpRooms = [
   null,
-  Math.floor(Math.random() * 9),
-  Math.floor(Math.random() * 9),
-  Math.floor(Math.random() * 9)
+  4, 4, 4
 ];
 const initialState = { level: 1, stairsDownRooms, stairsUpRooms };
 let occupied; // track spaces occupied by enemies and special items
@@ -276,6 +286,10 @@ const dungeon = (state = initialState, action) => {
     case 'FOUND_STAIRS_DOWN':
       return Object.assign({}, state, {
         level: state.level + 1
+      });
+    case 'FOUND_STAIRS_UP':
+      return Object.assign({}, state, {
+        level: state.level - 1
       });
     default:
       return state;
