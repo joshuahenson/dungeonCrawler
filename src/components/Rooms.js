@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import Enemy from '../containers/Enemy';
 import Health from './Health';
 import StairsDown from './StairsDown';
+import StairsUp from './StairsUp';
 
 const determineBackground = (visible, active) => {
   if (visible) {
@@ -29,6 +30,9 @@ const Rooms = ({ rooms }) => (
         {room.health.available ? <Health health={room.health} active={room.active} /> : null}
         {room.stairsDown.present ?
           <StairsDown location={room.stairsDown.location} active={room.active} /> :
+          null}
+        {room.stairsUp.present ?
+          <StairsUp location={room.stairsUp.location} active={room.active} /> :
           null}
       </div>
     )}

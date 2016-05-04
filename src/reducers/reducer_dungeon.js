@@ -1,5 +1,18 @@
-const initialState = { level: 1 };
-let occupied = new Set(); // track spaces occupied by enemies and special items
+// determine which room will have stairs going down.
+const stairsDownRooms = [
+  0, // only room on level
+  Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9),
+  null
+];
+const stairsUpRooms = [
+  null,
+  Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9)
+];
+const initialState = { level: 1, stairsDownRooms, stairsUpRooms };
+let occupied; // track spaces occupied by enemies and special items
 // determines order that halls connect rooms
 // create iife shuffled hall array with get method
 const shuffleHall = (function () {
@@ -19,12 +32,6 @@ const shuffleHall = (function () {
     get: index => newArr[index]
   };
 }());
-const stairSelectRoom = [
-  0,
-  Math.floor(Math.random() * 9),
-  Math.floor(Math.random() * 9),
-  Math.floor(Math.random() * 9)
-];
 // create random space for health items
 const initiateHealth = (x1, x2, y1, y2) => {
   if (Math.random() > 0.7) { // 0.7 or would i rather do n health and randomize placement?
@@ -51,23 +58,23 @@ const initiateHealth = (x1, x2, y1, y2) => {
     }
   };
 };
-// create random location for stairs going down
-const initiateStairsDown = (x1, x2, y1, y2, level, roomIndex) => {
-  if (level < 3 && roomIndex === stairSelectRoom[level]) { // not called on level[0]
+// create random location for stairs
+const initiateStairs = (x1, x2, y1, y2, level, roomIndex, direction) => {
+  if (((direction === 'down' && level < 3) && roomIndex === stairsDownRooms[level]) ||
+  (direction === 'up' && roomIndex === stairsUpRooms[level])) {
     const x = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
     const y = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
     if (occupied.has(`${x}_${y}`)) {
-      initiateStairsDown(x1, x2, y1, y2, level);
-    } else {
-      occupied.add(`${x}_${y}`);
-      return {
-        present: true,
-        location: {
-          x,
-          y
-        },
-      };
+      return initiateStairs(x1, x2, y1, y2, level, roomIndex, direction);
     }
+    occupied.add(`${x}_${y}`);
+    return {
+      present: true,
+      location: {
+        x,
+        y
+      },
+    };
   } // else return no stairs
   return {
     present: false,
@@ -108,7 +115,8 @@ for (let index = 0; index < 4; index++) {
           y: enemyY
         },
         health: initiateHealth(x1, x2, y1, y2),
-        stairsDown: initiateStairsDown(x1, x2, y1, y2, index, i)
+        stairsDown: initiateStairs(x1, x2, y1, y2, index, i, 'down'),
+        stairsUp: initiateStairs(x1, x2, y1, y2, index, i, 'up')
       };
     }
   } else {
