@@ -1,12 +1,24 @@
-const initialState = { level: 1 }; // todo turn back to 0
+const initialState = { level: 0 };
 let occupied = new Set(); // track spaces occupied by enemies and special items
 // determines order that halls connect rooms
-const hallwayOrder = [
-  [],
-  [0, 1, 2, 5, 4, 3, 6, 7, 8],
-  [0, 1, 2, 5, 8, 7, 6, 3, 4],
-  [0, 1, 2, 5, 4, 3, 6, 7, 8]
-];
+// create iife shuffled hall array with get method
+const shuffleHall = (function () {
+  const oldArr = [ // todo add more possibilities
+    [1, 2, 5, 8, 7, 6, 3, 0, 1, 4],
+    [0, 1, 2, 5, 4, 3, 6, 7, 8],
+    [0, 1, 2, 5, 8, 7, 6, 3, 4],
+    [2, 5, 4, 1, 0, 3, 6, 7, 8]
+  ];
+  // originally used Fisher–Yates Shuffle but this is more performant
+  // at least when not using full array
+  const newArr = [[]];
+  for (let i = 0; i < 3; i++) {
+    newArr.push(oldArr.splice(Math.floor(Math.random() * oldArr.length), 1)[0]);
+  }
+  return {
+    get: index => newArr[index]
+  };
+}());
 const stairSelectRoom = [
   0,
   Math.floor(Math.random() * 9),
@@ -129,7 +141,6 @@ for (let index = 0; index < 4; index++) {
       }
     };
   }
-  const hallOrder = hallwayOrder[index];
   // finds the shared horizontal range between two rooms
   // and returns a random number in that range
   const findSharedY = (top1, top2, bottom1, bottom2) => {
@@ -148,27 +159,30 @@ for (let index = 0; index < 4; index++) {
   };
   // returns an array of hallways that connect rooms
   const halls = {};
-  for (let i = 0; i < hallOrder.length - 1; i++) {
-    if (Math.abs(hallOrder[i] - hallOrder[i + 1]) === 1) { // horizontal hallway
-      const sharedY = findSharedY(rooms[hallOrder[i]].y1,
-        rooms[hallOrder[i + 1]].y1, rooms[hallOrder[i]].y2, rooms[hallOrder[i + 1]].y2);
-      halls[i] = {
-        x1: Math.min(rooms[hallOrder[i]].x2, rooms[hallOrder[i + 1]].x2) - 1,
-        x2: Math.max(rooms[hallOrder[i]].x1, rooms[hallOrder[i + 1]].x1) + 1,
-        y1: sharedY,
-        y2: sharedY,
-        visible: false
-      };
-    } else { // vertical
-      const sharedX = findSharedX(rooms[hallOrder[i]].x1,
-        rooms[hallOrder[i + 1]].x1, rooms[hallOrder[i]].x2, rooms[hallOrder[i + 1]].x2);
-      halls[i] = {
-        y1: Math.min(rooms[hallOrder[i]].y2, rooms[hallOrder[i + 1]].y2) - 1,
-        y2: Math.max(rooms[hallOrder[i]].y1, rooms[hallOrder[i + 1]].y1) + 1,
-        x1: sharedX,
-        x2: sharedX,
-        visible: false
-      };
+  if (index > 0) { // no halls on level 0
+    const hallOrder = shuffleHall.get(index);
+    for (let i = 0; i < hallOrder.length - 1; i++) {
+      if (Math.abs(hallOrder[i] - hallOrder[i + 1]) === 1) { // horizontal hallway
+        const sharedY = findSharedY(rooms[hallOrder[i]].y1,
+          rooms[hallOrder[i + 1]].y1, rooms[hallOrder[i]].y2, rooms[hallOrder[i + 1]].y2);
+        halls[i] = {
+          x1: Math.min(rooms[hallOrder[i]].x2, rooms[hallOrder[i + 1]].x2) - 1,
+          x2: Math.max(rooms[hallOrder[i]].x1, rooms[hallOrder[i + 1]].x1) + 1,
+          y1: sharedY,
+          y2: sharedY,
+          visible: true
+        };
+      } else { // vertical
+        const sharedX = findSharedX(rooms[hallOrder[i]].x1,
+          rooms[hallOrder[i + 1]].x1, rooms[hallOrder[i]].x2, rooms[hallOrder[i + 1]].x2);
+        halls[i] = {
+          y1: Math.min(rooms[hallOrder[i]].y2, rooms[hallOrder[i + 1]].y2) - 1,
+          y2: Math.max(rooms[hallOrder[i]].y1, rooms[hallOrder[i + 1]].y1) + 1,
+          x1: sharedX,
+          x2: sharedX,
+          visible: true
+        };
+      }
     }
   }
   // initiate board with 0's to start
