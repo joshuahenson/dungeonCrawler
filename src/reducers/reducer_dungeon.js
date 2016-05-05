@@ -1,27 +1,17 @@
 // determine which room will have stairs going down.
-// const stairsDownRooms = [
-//   0, // only room on level
-//   Math.floor(Math.random() * 9),
-//   Math.floor(Math.random() * 9),
-//   null
-// ];
-// const stairsUpRooms = [
-//   null,
-//   Math.floor(Math.random() * 9),
-//   Math.floor(Math.random() * 9),
-//   Math.floor(Math.random() * 9)
-// ];
 const stairsDownRooms = [
   0, // only room on level
-  4,
-  4,
+  Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9),
   null
 ];
 const stairsUpRooms = [
   null,
-  4, 4, 4
+  Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9)
 ];
-const initialState = { level: 1, stairsDownRooms, stairsUpRooms };
+const initialState = { level: 0, stairsDownRooms, stairsUpRooms, visible: true };
 let occupied; // track spaces occupied by enemies and special items
 // determines order that halls connect rooms
 // create iife shuffled hall array with get method
@@ -116,8 +106,8 @@ for (let index = 0; index < 4; index++) {
         x2,
         y1,
         y2,
-        visible: true,
-        active: true,
+        visible: false,
+        active: false,
         enemy: {
           alive: true, // todo random whether room has enemy
           type: 'generic', // todo assign type?
@@ -155,6 +145,13 @@ for (let index = 0; index < 4; index++) {
         location: {
           x: 50,
           y: 34
+        }
+      },
+      stairsUp: {
+        present: false,
+        location: {
+          x: -1,
+          y: -1
         },
       }
     };
@@ -188,7 +185,7 @@ for (let index = 0; index < 4; index++) {
           x2: Math.max(rooms[hallOrder[i]].x1, rooms[hallOrder[i + 1]].x1) + 1,
           y1: sharedY,
           y2: sharedY,
-          visible: true
+          visible: false
         };
       } else { // vertical
         const sharedX = findSharedX(rooms[hallOrder[i]].x1,
@@ -198,7 +195,7 @@ for (let index = 0; index < 4; index++) {
           y2: Math.max(rooms[hallOrder[i]].y1, rooms[hallOrder[i + 1]].y1) + 1,
           x1: sharedX,
           x2: sharedX,
-          visible: true
+          visible: false
         };
       }
     }
@@ -290,6 +287,10 @@ const dungeon = (state = initialState, action) => {
     case 'FOUND_STAIRS_UP':
       return Object.assign({}, state, {
         level: state.level - 1
+      });
+    case 'TOGGLE_DUNGEON_VIS':
+      return Object.assign({}, state, {
+        visible: !state.visible
       });
     default:
       return state;

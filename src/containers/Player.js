@@ -7,7 +7,8 @@ import {
   toggleActiveRoom,
   foundHealth,
   foundStairsDown,
-  foundStairsUp
+  foundStairsUp,
+  toggleDungeonVis
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
@@ -40,16 +41,24 @@ export default class Player extends Component {
     if (playerPos.x === stairsPos.x && playerPos.y === stairsPos.y) {
       const upLevel = this.props.level + 1;
       const room = this.props.dungeon.stairsUpRooms[upLevel];
+      const newPos = this.props.dungeon[upLevel].rooms[room].stairsUp.location;
+      this.props.toggleDungeonVis();
       this.props.foundStairsDown();
-      this.props.updatePosition(this.props.dungeon[upLevel].rooms[room].stairsUp.location);
+      this.props.updatePosition(newPos);
+      this.checkRoomVis(newPos, this.props.dungeon[upLevel].rooms[room], room, this.props.level);
+      setTimeout(() => this.props.toggleDungeonVis(), 400);
     }
   }
   checkStairsUp(playerPos, stairsPos) {
     if (playerPos.x === stairsPos.x && playerPos.y === stairsPos.y) {
       const downLevel = this.props.level - 1;
       const room = this.props.dungeon.stairsDownRooms[downLevel];
+      const newPos = this.props.dungeon[downLevel].rooms[room].stairsDown.location;
+      this.props.toggleDungeonVis();
       this.props.foundStairsUp();
-      this.props.updatePosition(this.props.dungeon[downLevel].rooms[room].stairsDown.location);
+      this.props.updatePosition(newPos);
+      this.checkRoomVis(newPos, this.props.dungeon[downLevel].rooms[room], room, this.props.level);
+      setTimeout(() => this.props.toggleDungeonVis(), 400);
     }
   }
   checkStatus(position, level) {
@@ -123,7 +132,8 @@ Player.propTypes = {
   toggleActiveRoom: PropTypes.func,
   foundHealth: PropTypes.func,
   foundStairsDown: PropTypes.func,
-  foundStairsUp: PropTypes.func
+  foundStairsUp: PropTypes.func,
+  toggleDungeonVis: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -142,7 +152,8 @@ function mapDispatchToProps(dispatch) {
     toggleActiveRoom,
     foundHealth,
     foundStairsDown,
-    foundStairsUp
+    foundStairsUp,
+    toggleDungeonVis
   }, dispatch);
 }
 

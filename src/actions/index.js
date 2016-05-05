@@ -48,3 +48,9 @@ export function foundStairsUp() {
     type: 'FOUND_STAIRS_UP'
   };
 }
+
+export function toggleDungeonVis() {
+  return {
+    type: 'TOGGLE_DUNGEON_VIS'
+  };
+}

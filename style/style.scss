@@ -10,6 +10,11 @@ body {
   margin: 0 auto;
 }
 
+.overlay {
+  z-index: 1;
+  transition: opacity 0.8s ease;
+}
+
 .room {
   position: absolute;
   transition: background-color 0.8s ease;

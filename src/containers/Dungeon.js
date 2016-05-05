@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import Player from './Player';
 import Rooms from '../components/Rooms';
 import Halls from '../components/Halls';
+import Overlay from '../components/Overlay';
 
 export default class Dungeon extends Component {
   render() {
     return (
       <div className="dungeon">
+        <Overlay visible={!this.props.dungeon.visible} />
         <Rooms rooms={ this.props.dungeon[this.props.level].rooms } />
         <Halls halls={ this.props.dungeon[this.props.level].halls } />
         <Player />
