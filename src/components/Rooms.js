@@ -7,9 +7,9 @@ import StairsUp from './StairsUp';
 const determineBackground = (visible, active) => {
   if (visible) {
     if (active) {
-      return 'rgba(255, 255, 0, 0.4)';
+      return 'rgba(255, 147, 41, 0.6)';
     } // else not active
-    return 'rgba(255, 255, 0, 0.1)';
+    return 'rgba(125, 125, 125, 0.3)';
   } // else not visible
   return 'black';
 };
