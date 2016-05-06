@@ -11,6 +11,24 @@ const stairsUpRooms = [
   Math.floor(Math.random() * 9),
   Math.floor(Math.random() * 9)
 ];
+const weaponRooms = {
+  0: {
+    room: 0,
+    type: 'Club'
+  },
+  1: {
+    room: Math.floor(Math.random() * 9),
+    type: 'Dagger'
+  },
+  2: {
+    room: Math.floor(Math.random() * 9),
+    type: 'Sword'
+  },
+  3: {
+    room: null,
+    type: null
+  }
+};
 const initialState = { level: 0, stairsDownRooms, stairsUpRooms, visible: true };
 let occupied; // track spaces occupied by enemies and special items
 // determines order that halls connect rooms
@@ -73,7 +91,7 @@ const initiateStairs = (x1, x2, y1, y2, level, roomIndex, direction) => {
       location: {
         x,
         y
-      },
+      }
     };
   } // else return no stairs
   return {
@@ -81,7 +99,34 @@ const initiateStairs = (x1, x2, y1, y2, level, roomIndex, direction) => {
     location: {
       x: -1000,
       y: -1000
-    },
+    }
+  };
+};
+// create random spot for weapons
+const initiateWeapons = (x1, x2, y1, y2, level, roomIndex) => {
+  if (roomIndex === weaponRooms[level].room) {
+    const x = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
+    const y = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
+    if (occupied.has(`${x}_${y}`)) {
+      return initiateWeapons(x1, x2, y1, y2, level, roomIndex);
+    }
+    occupied.add(`${x}_${y}`);
+    return {
+      available: true,
+      type: weaponRooms[level].type,
+      location: {
+        x,
+        y
+      }
+    };
+  } // else return no weapons
+  return {
+    available: false,
+    type: 'None',
+    location: {
+      x: -1000,
+      y: -1000
+    }
   };
 };
 // **********************************
@@ -116,7 +161,8 @@ for (let index = 0; index < 4; index++) {
         },
         health: initiateHealth(x1, x2, y1, y2),
         stairsDown: initiateStairs(x1, x2, y1, y2, index, i, 'down'),
-        stairsUp: initiateStairs(x1, x2, y1, y2, index, i, 'up')
+        stairsUp: initiateStairs(x1, x2, y1, y2, index, i, 'up'),
+        weapon: initiateWeapons(x1, x2, y1, y2, index, i)
       };
     }
   } else {
@@ -152,7 +198,15 @@ for (let index = 0; index < 4; index++) {
         location: {
           x: -1000,
           y: -1000
-        },
+        }
+      },
+      weapon: {
+        available: true,
+        type: 'Club',
+        location: {
+          x: 47,
+          y: 34
+        }
       }
     };
   }
@@ -274,6 +328,18 @@ const dungeon = (state = initialState, action) => {
           rooms: Object.assign({}, state[action.level].rooms, {
             [action.index]: Object.assign({}, state[action.level].rooms[action.index], {
               health: Object.assign({}, state[action.level].rooms[action.index].health, {
+                available: false
+              })
+            })
+          })
+        })
+      });
+    case 'FOUND_WEAPON':
+      return Object.assign({}, state, {
+        [action.level]: Object.assign({}, state[action.level], {
+          rooms: Object.assign({}, state[action.level].rooms, {
+            [action.index]: Object.assign({}, state[action.level].rooms[action.index], {
+              weapon: Object.assign({}, state[action.level].rooms[action.index].health, {
                 available: false
               })
             })

@@ -37,6 +37,15 @@ export function foundHealth(index, level) {
   };
 }
 
+export function foundWeapon(index, level, weaponType) {
+  return {
+    type: 'FOUND_WEAPON',
+    index,
+    level,
+    weaponType
+  };
+}
+
 export function foundStairsDown() {
   return {
     type: 'FOUND_STAIRS_DOWN'

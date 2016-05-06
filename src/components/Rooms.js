@@ -3,6 +3,7 @@ import Enemy from '../containers/Enemy';
 import Health from './Health';
 import StairsDown from './StairsDown';
 import StairsUp from './StairsUp';
+import Weapon from './Weapon';
 
 const determineBackground = (visible, active) => {
   if (visible) {
@@ -28,6 +29,7 @@ const Rooms = ({ rooms }) => (
         />
         {room.enemy.alive ? <Enemy active={room.active} status={room.enemy} id={index} /> : null}
         {room.health.available ? <Health health={room.health} active={room.active} /> : null}
+        {room.weapon.available ? <Weapon weapon={room.weapon} active={room.active} /> : null}
         {room.stairsDown.present ?
           <StairsDown location={room.stairsDown.location} active={room.active} /> :
           null}
