@@ -33,8 +33,8 @@ export default class Player extends Component {
       this.props.toggleActiveRoom(index, level);
     }
   }
-  checkHealthPack(playerPos, healthPos, index, level) {
-    if (playerPos.x === healthPos.x && playerPos.y === healthPos.y) {
+  checkHealthPack(playerPos, healthPos, available, index, level) {
+    if (playerPos.x === healthPos.x && playerPos.y === healthPos.y && available) {
       this.props.foundHealth(index, level);
       this.props.updateMessage('You found a health pack');
     }
@@ -82,7 +82,9 @@ export default class Player extends Component {
     for (const i in rooms) {
       if (rooms.hasOwnProperty(i)) {
         this.checkRoomVis(position, rooms[i], i, level);
-        this.checkHealthPack(position, rooms[i].health.location, i, level);
+        this.checkHealthPack(
+          position, rooms[i].health.location, rooms[i].health.available, i, level
+        );
         this.checkStairsDown(position, rooms[i].stairsDown.location);
         this.checkStairsUp(position, rooms[i].stairsUp.location);
       }
