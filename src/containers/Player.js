@@ -8,7 +8,8 @@ import {
   foundHealth,
   foundStairsDown,
   foundStairsUp,
-  toggleDungeonVis
+  toggleDungeonVis,
+  updateMessage
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
@@ -35,6 +36,7 @@ export default class Player extends Component {
   checkHealthPack(playerPos, healthPos, index, level) {
     if (playerPos.x === healthPos.x && playerPos.y === healthPos.y) {
       this.props.foundHealth(index, level);
+      this.props.updateMessage('You found a health pack');
     }
   }
   checkStairsDown(playerPos, stairsPos) {
@@ -46,6 +48,7 @@ export default class Player extends Component {
       this.props.foundStairsDown();
       this.props.updatePosition(newPos);
       this.checkRoomVis(newPos, this.props.dungeon[upLevel].rooms[room], room, this.props.level);
+      this.props.updateMessage(`You found stairs leading to level ${upLevel}`);
       setTimeout(() => this.props.toggleDungeonVis(), 400);
     }
   }
@@ -58,6 +61,7 @@ export default class Player extends Component {
       this.props.foundStairsUp();
       this.props.updatePosition(newPos);
       this.checkRoomVis(newPos, this.props.dungeon[downLevel].rooms[room], room, this.props.level);
+      this.props.updateMessage(`You found stairs leading to level ${downLevel}`);
       setTimeout(() => this.props.toggleDungeonVis(), 400);
     }
   }
@@ -133,7 +137,8 @@ Player.propTypes = {
   foundHealth: PropTypes.func,
   foundStairsDown: PropTypes.func,
   foundStairsUp: PropTypes.func,
-  toggleDungeonVis: PropTypes.func
+  toggleDungeonVis: PropTypes.func,
+  updateMessage: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -153,7 +158,8 @@ function mapDispatchToProps(dispatch) {
     foundHealth,
     foundStairsDown,
     foundStairsUp,
-    toggleDungeonVis
+    toggleDungeonVis,
+    updateMessage
   }, dispatch);
 }
 

@@ -54,3 +54,10 @@ export function toggleDungeonVis() {
     type: 'TOGGLE_DUNGEON_VIS'
   };
 }
+
+export function updateMessage(message) {
+  return {
+    type: 'UPDATE_MESSAGE',
+    message
+  };
+}
