@@ -53,8 +53,8 @@ const initiateHealth = (x1, x2, y1, y2) => {
   return {
     available: false,
     location: {
-      x: -1,
-      y: -1
+      x: -1000,
+      y: -1000
     }
   };
 };
@@ -79,8 +79,8 @@ const initiateStairs = (x1, x2, y1, y2, level, roomIndex, direction) => {
   return {
     present: false,
     location: {
-      x: -1,
-      y: -1
+      x: -1000,
+      y: -1000
     },
   };
 };
@@ -130,14 +130,14 @@ for (let index = 0; index < 4; index++) {
       enemy: {
         alive: false,
         type: 'generic',
-        x: -1,
-        y: -1
+        x: -1000,
+        y: -1000
       },
       health: {
         available: false,
         location: {
-          x: -1,
-          y: -1
+          x: -1000,
+          y: -1000
         }
       },
       stairsDown: {
@@ -150,8 +150,8 @@ for (let index = 0; index < 4; index++) {
       stairsUp: {
         present: false,
         location: {
-          x: -1,
-          y: -1
+          x: -1000,
+          y: -1000
         },
       }
     };
