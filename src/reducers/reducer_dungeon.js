@@ -156,8 +156,10 @@ for (let index = 0; index < 4; index++) {
         enemy: {
           alive: true, // todo random whether room has enemy
           type: 'generic', // todo assign type?
-          x: enemyX,
-          y: enemyY
+          location: {
+            x: enemyX,
+            y: enemyY
+          }
         },
         health: initiateHealth(x1, x2, y1, y2),
         stairsDown: initiateStairs(x1, x2, y1, y2, index, i, 'down'),
@@ -176,8 +178,10 @@ for (let index = 0; index < 4; index++) {
       enemy: {
         alive: false,
         type: 'generic',
-        x: -1000,
-        y: -1000
+        location: {
+          x: -1000,
+          y: -1000
+        }
       },
       health: {
         available: false,

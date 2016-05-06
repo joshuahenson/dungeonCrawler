@@ -8,8 +8,8 @@ export default class Enemy extends Component {
     return (
         <svg width="10" height="10" className="absolute"
           style={{
-            top: this.props.status.y * 10,
-            left: this.props.status.x * 10,
+            top: this.props.location.y * 10,
+            left: this.props.location.x * 10,
             opacity: this.props.active ? 1 : 0
           }}
         >
@@ -23,7 +23,7 @@ export default class Enemy extends Component {
 }
 
 Enemy.propTypes = {
-  status: PropTypes.object,
+  location: PropTypes.object,
   active: PropTypes.bool
 };
 
