@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 export default class Message extends Component {
   render() {
     return (
-      <div className="info">
+      <div className="message">
         test
       </div>
     );
