@@ -9,6 +9,7 @@ export default class Info extends Component {
       <div className="info">
         <div className="stats">
           <span>Dungeon Level: {level}</span>
+          <span>Weapon: {player.weapon}</span>
           <span>Health: {player.health}</span>
           <span>Experience: {player.xp}</span>
           <span>Skill Level: {player.skill}</span>
