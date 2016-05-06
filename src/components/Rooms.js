@@ -26,7 +26,7 @@ const Rooms = ({ rooms }) => (
           backgroundColor: determineBackground(room.visible, room.active)
         }}
         />
-        <Enemy active={room.active} status={room.enemy} id={index} />
+        {room.enemy.alive ? <Enemy active={room.active} status={room.enemy} id={index} /> : null}
         {room.health.available ? <Health health={room.health} active={room.active} /> : null}
         {room.stairsDown.present ?
           <StairsDown location={room.stairsDown.location} active={room.active} /> :
