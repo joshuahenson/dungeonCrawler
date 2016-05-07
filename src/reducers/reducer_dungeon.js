@@ -343,7 +343,7 @@ const dungeon = (state = initialState, action) => {
         [action.level]: Object.assign({}, state[action.level], {
           rooms: Object.assign({}, state[action.level].rooms, {
             [action.index]: Object.assign({}, state[action.level].rooms[action.index], {
-              enemy: Object.assign({}, state[action.level].rooms[action.index].health, {
+              enemy: Object.assign({}, state[action.level].rooms[action.index].enemy, {
                 alive: false
               })
             })
@@ -355,7 +355,7 @@ const dungeon = (state = initialState, action) => {
         [action.level]: Object.assign({}, state[action.level], {
           rooms: Object.assign({}, state[action.level].rooms, {
             [action.index]: Object.assign({}, state[action.level].rooms[action.index], {
-              weapon: Object.assign({}, state[action.level].rooms[action.index].health, {
+              weapon: Object.assign({}, state[action.level].rooms[action.index].weapon, {
                 available: false
               })
             })
