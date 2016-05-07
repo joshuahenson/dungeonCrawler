@@ -91,6 +91,7 @@ export default class Player extends Component {
           message += 'You have been defeated!';
           this.props.updateMessage(message);
           this.props.toggleDungeonVis();
+          // todo add gameOver()
           break;
         }
       }
