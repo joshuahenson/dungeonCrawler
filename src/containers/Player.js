@@ -15,13 +15,17 @@ import {
 import { bindActionCreators } from 'redux';
 
 export default class Player extends Component {
+  constructor(props) {
+    super(props);
+    this.currentRoom = 0;
+  }
   componentDidMount() {
     window.addEventListener('keydown', this.checkPosition.bind(this));
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.checkPosition.bind(this));
   }
-  checkRoomVis(position, room, index, level) {
+  checkRooms(position, room, index, level) {
     if (position.x >= room.x1 && position.x < room.x2 &&
       position.y >= room.y1 && position.y < room.y2) { // player in room
       if (!room.visible) { // player in room but room isn't visible
@@ -29,6 +33,7 @@ export default class Player extends Component {
       }
       if (!room.active) { // player in room but room isn't active
         this.props.toggleActiveRoom(index, level);
+        this.currentRoom = index;
       }
     } else if (room.active) { // player not in room but room is active
       this.props.toggleActiveRoom(index, level);
@@ -46,30 +51,42 @@ export default class Player extends Component {
       this.props.updateMessage(`You found a ${weaponType}`);
     }
   }
-  checkStairsDown(playerPos, stairsPos) {
-    if (playerPos.x === stairsPos.x && playerPos.y === stairsPos.y) {
-      const upLevel = this.props.level + 1;
-      const room = this.props.dungeon.stairsUpRooms[upLevel];
-      const newPos = this.props.dungeon[upLevel].rooms[room].stairsUp.location;
-      this.props.toggleDungeonVis();
-      this.props.foundStairsDown();
-      this.props.updatePosition(newPos);
-      this.checkRoomVis(newPos, this.props.dungeon[upLevel].rooms[room], room, this.props.level);
-      this.props.updateMessage(`You found stairs leading to level ${upLevel}`);
-      setTimeout(() => this.props.toggleDungeonVis(), 400);
-    }
+  takeStairsDown() {
+    const level = this.props.level;
+    const upLevel = this.props.level + 1;
+    const pastRoom = this.props.dungeon.stairsDownRooms[level];
+    const newRoom = this.props.dungeon.stairsUpRooms[upLevel];
+    const newPos = this.props.dungeon[upLevel].rooms[newRoom].stairsUp.location;
+    this.props.toggleDungeonVis();
+    this.props.foundStairsDown();
+    this.props.updatePosition(newPos);
+    this.checkRooms(newPos, this.props.dungeon[level].rooms[pastRoom],
+      pastRoom, level);
+    this.checkRooms(newPos, this.props.dungeon[upLevel].rooms[newRoom], newRoom, upLevel);
+    this.props.updateMessage(`You found stairs leading to level ${upLevel}`);
+    setTimeout(() => this.props.toggleDungeonVis(), 400);
   }
-  checkStairsUp(playerPos, stairsPos) {
-    if (playerPos.x === stairsPos.x && playerPos.y === stairsPos.y) {
-      const downLevel = this.props.level - 1;
-      const room = this.props.dungeon.stairsDownRooms[downLevel];
-      const newPos = this.props.dungeon[downLevel].rooms[room].stairsDown.location;
-      this.props.toggleDungeonVis();
-      this.props.foundStairsUp();
-      this.props.updatePosition(newPos);
-      this.checkRoomVis(newPos, this.props.dungeon[downLevel].rooms[room], room, this.props.level);
-      this.props.updateMessage(`You found stairs leading to level ${downLevel}`);
-      setTimeout(() => this.props.toggleDungeonVis(), 400);
+  takeStairsUp() {
+    const level = this.props.level;
+    const downLevel = this.props.level - 1;
+    const pastRoom = this.props.dungeon.stairsUpRooms[level];
+    const newRoom = this.props.dungeon.stairsDownRooms[downLevel];
+    const newPos = this.props.dungeon[downLevel].rooms[newRoom].stairsDown.location;
+    this.props.toggleDungeonVis();
+    this.props.foundStairsUp();
+    this.props.updatePosition(newPos);
+    this.checkRooms(newPos, this.props.dungeon[level].rooms[pastRoom],
+      pastRoom, level);
+    this.checkRooms(newPos, this.props.dungeon[downLevel].rooms[newRoom], newRoom, downLevel);
+    this.props.updateMessage(`You found stairs leading to level ${downLevel}`);
+    setTimeout(() => this.props.toggleDungeonVis(), 400);
+  }
+  checkStairs(playerPos, room) {
+    if (playerPos.x === room.stairsDown.location.x && playerPos.y === room.stairsDown.location.y) {
+      this.takeStairsDown();
+    } else if (playerPos.x === room.stairsUp.location.x &&
+      playerPos.y === room.stairsUp.location.y) {
+      this.takeStairsUp();
     }
   }
   checkStatus(position, level) {
@@ -88,18 +105,15 @@ export default class Player extends Component {
     const rooms = this.props.dungeon[level].rooms;
     for (const i in rooms) {
       if (rooms.hasOwnProperty(i)) {
-        this.checkRoomVis(position, rooms[i], i, level);
-        this.checkHealthPack(
-          position, rooms[i].health.location, rooms[i].health.available, i, level
-        );
-        this.checkWeapon(
-          position, rooms[i].weapon.location, rooms[i].weapon.available,
-          rooms[i].weapon.type, i, level
-        );
-        this.checkStairsDown(position, rooms[i].stairsDown.location);
-        this.checkStairsUp(position, rooms[i].stairsUp.location);
+        this.checkRooms(position, rooms[i], i, level);
       }
     }
+    this.checkHealthPack(position, rooms[this.currentRoom].health.location,
+      rooms[this.currentRoom].health.available, this.currentRoom, level);
+    this.checkWeapon(position, rooms[this.currentRoom].weapon.location,
+      rooms[this.currentRoom].weapon.available,
+      rooms[this.currentRoom].weapon.type, this.currentRoom, level);
+    this.checkStairs(position, rooms[this.currentRoom]);
   }
   checkPosition(key) {
     // check key direction and whether board is open
