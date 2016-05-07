@@ -37,6 +37,7 @@ export default class Player extends Component {
       }
     } else if (room.active) { // player not in room but room is active
       this.props.toggleActiveRoom(index, level);
+      this.currentRoom = undefined;
     }
   }
   checkHealthPack(playerPos, healthPos, available, index, level) {
@@ -108,12 +109,14 @@ export default class Player extends Component {
         this.checkRooms(position, rooms[i], i, level);
       }
     }
-    this.checkHealthPack(position, rooms[this.currentRoom].health.location,
-      rooms[this.currentRoom].health.available, this.currentRoom, level);
-    this.checkWeapon(position, rooms[this.currentRoom].weapon.location,
-      rooms[this.currentRoom].weapon.available,
-      rooms[this.currentRoom].weapon.type, this.currentRoom, level);
-    this.checkStairs(position, rooms[this.currentRoom]);
+    if (this.currentRoom >= 0) { // Don't bother checking in hallways(undefined)
+      this.checkHealthPack(position, rooms[this.currentRoom].health.location,
+        rooms[this.currentRoom].health.available, this.currentRoom, level);
+      this.checkWeapon(position, rooms[this.currentRoom].weapon.location,
+        rooms[this.currentRoom].weapon.available,
+        rooms[this.currentRoom].weapon.type, this.currentRoom, level);
+      this.checkStairs(position, rooms[this.currentRoom]);
+    }
   }
   checkPosition(key) {
     // check key direction and whether board is open
