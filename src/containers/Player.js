@@ -15,6 +15,10 @@ import {
 import { bindActionCreators } from 'redux';
 
 export default class Player extends Component {
+  constructor(props) {
+    super(props);
+    this.currentRoom = 0;
+  }
   componentDidMount() {
     window.addEventListener('keydown', this.checkPosition.bind(this));
   }
@@ -29,9 +33,11 @@ export default class Player extends Component {
       }
       if (!room.active) { // player in room but room isn't active
         this.props.toggleActiveRoom(index, level);
+        this.currentRoom = index;
       }
     } else if (room.active) { // player not in room but room is active
       this.props.toggleActiveRoom(index, level);
+        this.currentRoom = null;
     }
   }
   checkHealthPack(playerPos, healthPos, available, index, level) {
@@ -92,6 +98,9 @@ export default class Player extends Component {
         this.checkHealthPack(
           position, rooms[i].health.location, rooms[i].health.available, i, level
         );
+        // this.checkEnemy(
+        //   position, rooms[i].enemy.location, rooms[i].enemy.alive, i, level
+        // );
         this.checkWeapon(
           position, rooms[i].weapon.location, rooms[i].weapon.available,
           rooms[i].weapon.type, i, level
