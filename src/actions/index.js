@@ -70,3 +70,25 @@ export function updateMessage(message) {
     message
   };
 }
+
+export function defeatedEnemy(index, level, message) {
+  return {
+    type: 'DEFEATED_ENEMY',
+    message,
+    index,
+    level
+  };
+}
+
+export function updateHealth(health) {
+  return {
+    type: 'UPDATE_HEALTH',
+    health
+  };
+}
+
+export function increaseSkill() {
+  return {
+    type: 'INCREASE_SKILL'
+  };
+}

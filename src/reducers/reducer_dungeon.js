@@ -338,6 +338,18 @@ const dungeon = (state = initialState, action) => {
           })
         })
       });
+    case 'DEFEATED_ENEMY':
+      return Object.assign({}, state, {
+        [action.level]: Object.assign({}, state[action.level], {
+          rooms: Object.assign({}, state[action.level].rooms, {
+            [action.index]: Object.assign({}, state[action.level].rooms[action.index], {
+              enemy: Object.assign({}, state[action.level].rooms[action.index].health, {
+                alive: false
+              })
+            })
+          })
+        })
+      });
     case 'FOUND_WEAPON':
       return Object.assign({}, state, {
         [action.level]: Object.assign({}, state[action.level], {

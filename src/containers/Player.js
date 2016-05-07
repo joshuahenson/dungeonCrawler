@@ -10,7 +10,10 @@ import {
   foundStairsUp,
   toggleDungeonVis,
   updateMessage,
-  foundWeapon
+  foundWeapon,
+  defeatedEnemy,
+  updateHealth,
+  increaseSkill
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
@@ -44,6 +47,56 @@ export default class Player extends Component {
     if (playerPos.x === healthPos.x && playerPos.y === healthPos.y && available) {
       this.props.foundHealth(index, level);
       this.props.updateMessage('You found a health pack');
+    }
+  }
+  checkSkill() {
+    const xp = this.props.player.xp;
+    const skill = this.props.player.skill;
+    if (
+    (xp > 269 && skill < 4) ||
+    (xp > 179 && skill < 3) ||
+    (xp > 89 && skill < 2)
+    ) {
+      this.props.increaseSkill();
+    }
+  }
+  checkEnemy(playerPos, enemyPos, alive, index, level) {
+    if (playerPos.x === enemyPos.x && playerPos.y === enemyPos.y && alive) {
+      let enemyHealth = level * 50;
+      let playerHealth = this.props.player.health;
+      let message = 'You began battle with an enemy. ';
+      const weaponMultiplier = {
+        Club: 1,
+        Dagger: 2,
+        Sword: 3
+      }[this.props.player.weapon] + this.props.player.skill;
+      let playerAttack;
+      let enemyAttack;
+      /* eslint no-constant-condition: 0 */
+      while (true) {
+        playerAttack = Math.floor(Math.random() * 21) + (weaponMultiplier * 10);
+        enemyHealth -= playerAttack;
+        message += `You strike doing ${playerAttack} 
+          damage leaving the enemy with ${enemyHealth} health. `;
+        if (enemyHealth <= 0) {
+          message += 'You have defeated the enemy!';
+          this.props.defeatedEnemy(index, level, message);
+          break;
+        }
+        enemyAttack = Math.floor(Math.random() * 11) + (level * 10);
+        playerHealth -= enemyAttack;
+        message += `The enemy strikes doing ${enemyAttack} 
+          damage leaving you with ${playerHealth} health. `;
+        if (playerHealth <= 0) {
+          message += 'You have been defeated!';
+          this.props.updateMessage(message);
+          this.props.toggleDungeonVis();
+          break;
+        }
+      }
+      this.props.updateHealth(playerHealth);
+      // todo add updateHealth to defeated enemy and lost action above ??
+      this.checkSkill();
     }
   }
   checkWeapon(playerPos, weaponPos, available, weaponType, index, level) {
@@ -112,6 +165,8 @@ export default class Player extends Component {
     if (this.currentRoom >= 0) { // Don't bother checking in hallways(undefined)
       this.checkHealthPack(position, rooms[this.currentRoom].health.location,
         rooms[this.currentRoom].health.available, this.currentRoom, level);
+      this.checkEnemy(position, rooms[this.currentRoom].enemy.location,
+        rooms[this.currentRoom].enemy.alive, this.currentRoom, level);
       this.checkWeapon(position, rooms[this.currentRoom].weapon.location,
         rooms[this.currentRoom].weapon.available,
         rooms[this.currentRoom].weapon.type, this.currentRoom, level);
@@ -120,11 +175,10 @@ export default class Player extends Component {
   }
   checkPosition(key) {
     // check key direction and whether board is open
-    // todo compare to enemy location
     let newPosition = null;
     const board = this.props.dungeon[this.props.level].board;
-    const x = this.props.location.x;
-    const y = this.props.location.y;
+    const x = this.props.player.location.x;
+    const y = this.props.player.location.y;
     if (key.keyCode === 37 && board[x - 1][y]) { // left
       newPosition = { x: x - 1, y };
     } else if (key.keyCode === 38 && board[x][y - 1]) { // up
@@ -143,8 +197,8 @@ export default class Player extends Component {
     return (
         <svg width="10" height="10" className="absolute"
           style={{
-            top: this.props.location.y * 10,
-            left: this.props.location.x * 10,
+            top: this.props.player.location.y * 10,
+            left: this.props.player.location.x * 10,
           }}
         >
           <circle cx="5" cy="5" r="5" fill="yellow" />
@@ -157,7 +211,7 @@ export default class Player extends Component {
 }
 
 Player.propTypes = {
-  location: PropTypes.object,
+  player: PropTypes.object,
   updatePosition: PropTypes.func,
   dungeon: PropTypes.object,
   level: PropTypes.number,
@@ -169,12 +223,15 @@ Player.propTypes = {
   foundStairsUp: PropTypes.func,
   toggleDungeonVis: PropTypes.func,
   updateMessage: PropTypes.func,
-  foundWeapon: PropTypes.func
+  foundWeapon: PropTypes.func,
+  defeatedEnemy: PropTypes.func,
+  updateHealth: PropTypes.func,
+  increaseSkill: PropTypes.func
 };
 
 function mapStateToProps(state) {
   return {
-    location: state.player.location,
+    player: state.player,
     dungeon: state.dungeon,
     level: state.dungeon.level
   };
@@ -191,7 +248,10 @@ function mapDispatchToProps(dispatch) {
     foundStairsUp,
     toggleDungeonVis,
     updateMessage,
-    foundWeapon
+    foundWeapon,
+    defeatedEnemy,
+    updateHealth,
+    increaseSkill
   }, dispatch);
 }
 
