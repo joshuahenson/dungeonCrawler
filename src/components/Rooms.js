@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Enemy from '../containers/Enemy';
+import Enemy from './Enemy';
 import Health from './Health';
 import StairsDown from './StairsDown';
 import StairsUp from './StairsUp';
@@ -28,7 +28,7 @@ const Rooms = ({ rooms }) => (
         }}
         />
         {room.enemy.alive ?
-          <Enemy active={room.active} location={room.enemy.location} id={index} /> :
+          <Enemy active={room.active} location={room.enemy.location} /> :
           null}
         {room.health.available ? <Health health={room.health} active={room.active} /> : null}
         {room.weapon.available ? <Weapon weapon={room.weapon} active={room.active} /> : null}
