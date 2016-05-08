@@ -19,17 +19,14 @@ const player = (state = initialState, action) => {
       return Object.assign({}, state, {
         health: state.health < 90 ? state.health + 10 : 100
       });
-    case 'UPDATE_HEALTH':
-      return Object.assign({}, state, {
-        health: action.health
-      });
     case 'FOUND_WEAPON':
       return Object.assign({}, state, {
         weapon: action.weaponType
       });
     case 'DEFEATED_ENEMY':
       return Object.assign({}, state, {
-        xp: state.xp + 10
+        xp: state.xp + 10,
+        health: action.health
       });
     case 'INCREASE_SKILL':
       return Object.assign({}, state, {

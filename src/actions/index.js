@@ -71,18 +71,12 @@ export function updateMessage(message) {
   };
 }
 
-export function defeatedEnemy(index, level, message) {
+export function defeatedEnemy(index, level, message, health) {
   return {
     type: 'DEFEATED_ENEMY',
     message,
     index,
-    level
-  };
-}
-
-export function updateHealth(health) {
-  return {
-    type: 'UPDATE_HEALTH',
+    level,
     health
   };
 }

@@ -12,7 +12,6 @@ import {
   updateMessage,
   foundWeapon,
   defeatedEnemy,
-  updateHealth,
   increaseSkill
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
@@ -76,16 +75,16 @@ export default class Player extends Component {
       while (true) {
         playerAttack = Math.floor(Math.random() * 21) + (weaponMultiplier * 10);
         enemyHealth -= playerAttack;
-        message += `You strike doing ${playerAttack} 
+        message += `You strike doing ${playerAttack}
           damage leaving the enemy with ${enemyHealth} health. `;
         if (enemyHealth <= 0) {
           message += 'You have defeated the enemy!';
-          this.props.defeatedEnemy(index, level, message);
+          this.props.defeatedEnemy(index, level, message, playerHealth);
           break;
         }
         enemyAttack = Math.floor(Math.random() * 11) + (level * 10);
         playerHealth -= enemyAttack;
-        message += `The enemy strikes doing ${enemyAttack} 
+        message += `The enemy strikes doing ${enemyAttack}
           damage leaving you with ${playerHealth} health. `;
         if (playerHealth <= 0) {
           message += 'You have been defeated!';
@@ -95,8 +94,6 @@ export default class Player extends Component {
           break;
         }
       }
-      this.props.updateHealth(playerHealth);
-      // todo add updateHealth to defeated enemy and lost action above ??
       this.checkSkill();
     }
   }
@@ -226,7 +223,6 @@ Player.propTypes = {
   updateMessage: PropTypes.func,
   foundWeapon: PropTypes.func,
   defeatedEnemy: PropTypes.func,
-  updateHealth: PropTypes.func,
   increaseSkill: PropTypes.func
 };
 
@@ -251,7 +247,6 @@ function mapDispatchToProps(dispatch) {
     updateMessage,
     foundWeapon,
     defeatedEnemy,
-    updateHealth,
     increaseSkill
   }, dispatch);
 }
