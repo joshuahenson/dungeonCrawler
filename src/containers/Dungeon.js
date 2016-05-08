@@ -10,7 +10,7 @@ export default class Dungeon extends Component {
     return (
       <div className="dungeon">
         <Overlay visible={!this.props.dungeon.visible} />
-        <Rooms rooms={ this.props.dungeon[this.props.level].rooms } />
+        <Rooms rooms={ this.props.dungeon[this.props.level].rooms } level={ this.props.level } />
         <Halls halls={ this.props.dungeon[this.props.level].halls } />
         <Player />
       </div>

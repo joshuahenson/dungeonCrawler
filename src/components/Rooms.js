@@ -15,7 +15,7 @@ const determineBackground = (visible, active) => {
   return 'black';
 };
 
-const Rooms = ({ rooms }) => (
+const Rooms = ({ rooms, level }) => (
   <div>
     {Object.values(rooms).map((room, index) =>
       <div key={index}>
@@ -28,7 +28,7 @@ const Rooms = ({ rooms }) => (
         }}
         />
         {room.enemy.alive ?
-          <Enemy active={room.active} location={room.enemy.location} /> :
+          <Enemy active={room.active} location={room.enemy.location} level={level} /> :
           null}
         {room.health.available ? <Health health={room.health} active={room.active} /> : null}
         {room.weapon.available ? <Weapon weapon={room.weapon} active={room.active} /> : null}
@@ -44,7 +44,8 @@ const Rooms = ({ rooms }) => (
 );
 
 Rooms.propTypes = {
-  rooms: PropTypes.object
+  rooms: PropTypes.object,
+  level: PropTypes.number
 };
 
 export default Rooms;
