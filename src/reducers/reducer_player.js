@@ -17,7 +17,7 @@ const player = (state = initialState, action) => {
       });
     case 'FOUND_HEALTH':
       return Object.assign({}, state, {
-        health: state.health < 90 ? state.health + 10 : 100
+        health: state.health < 75 ? state.health + 25 : 100
       });
     case 'FOUND_WEAPON':
       return Object.assign({}, state, {

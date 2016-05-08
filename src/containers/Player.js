@@ -68,12 +68,13 @@ export default class Player extends Component {
         Club: 1,
         Dagger: 2,
         Sword: 3
-      }[this.props.player.weapon] + this.props.player.skill;
+      }[this.props.player.weapon];
       let playerAttack;
       let enemyAttack;
       /* eslint no-constant-condition: 0 */
       while (true) {
-        playerAttack = Math.floor(Math.random() * 21) + (weaponMultiplier * 10);
+        playerAttack = Math.floor(Math.random() * 11 * weaponMultiplier) +
+          (this.props.player.skill * 20);
         enemyHealth -= playerAttack;
         message += `You strike doing ${playerAttack}
           damage leaving the enemy with ${enemyHealth} health. `;
@@ -82,7 +83,7 @@ export default class Player extends Component {
           this.props.defeatedEnemy(index, level, message, playerHealth);
           break;
         }
-        enemyAttack = Math.floor(Math.random() * 11) + (level * 10);
+        enemyAttack = Math.floor(Math.random() * 11);
         playerHealth -= enemyAttack;
         message += `The enemy strikes doing ${enemyAttack}
           damage leaving you with ${playerHealth} health. `;

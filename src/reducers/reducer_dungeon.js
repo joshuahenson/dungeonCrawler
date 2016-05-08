@@ -52,7 +52,7 @@ const shuffleHall = (function () {
 }());
 // create random space for health items
 const initiateHealth = (x1, x2, y1, y2) => {
-  if (Math.floor(Math.random())) { // or would i rather do n health and randomize placement?
+  if (Math.round(Math.random())) {
     const x = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
     const y = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
     if (occupied.has(`${x}_${y}`)) {
