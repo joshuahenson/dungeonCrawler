@@ -84,7 +84,7 @@ export default class Player extends Component {
           this.props.defeatedEnemy(index, level, message, playerHealth);
           break;
         }
-        enemyAttack = Math.floor(Math.random() * 11);
+        enemyAttack = Math.floor(Math.random() * 11) + (level * 3);
         playerHealth -= enemyAttack;
         message += `The enemy strikes doing ${enemyAttack}
           damage leaving you with ${playerHealth} health. `;
