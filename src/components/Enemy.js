@@ -2,9 +2,11 @@ import React, { PropTypes } from 'react';
 
 const determineColor = (level) => {
   if (level === 1) {
-    return 'blue';
-  } else if (level === 2) {
     return 'green';
+  } else if (level === 2) {
+    return 'blue';
+  } else if (level === 3) {
+    return 'purple';
   }
   return 'red';
 };

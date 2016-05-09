@@ -3,13 +3,15 @@ const stairsDownRooms = [
   0, // only room on level
   Math.floor(Math.random() * 9),
   Math.floor(Math.random() * 9),
+  Math.floor(Math.random() * 9),
   null
 ];
 const stairsUpRooms = [
   null,
   Math.floor(Math.random() * 9),
   Math.floor(Math.random() * 9),
-  Math.floor(Math.random() * 9)
+  Math.floor(Math.random() * 9),
+  0
 ];
 const weaponRooms = {
   0: {
@@ -25,6 +27,10 @@ const weaponRooms = {
     type: 'Sword'
   },
   3: {
+    room: null,
+    type: null
+  },
+  4: {
     room: null,
     type: null
   }
@@ -78,7 +84,7 @@ const initiateHealth = (x1, x2, y1, y2) => {
 };
 // create random location for stairs
 const initiateStairs = (x1, x2, y1, y2, level, roomIndex, direction) => {
-  if (((direction === 'down' && level < 3) && roomIndex === stairsDownRooms[level]) ||
+  if ((direction === 'down' && roomIndex === stairsDownRooms[level]) ||
   (direction === 'up' && roomIndex === stairsUpRooms[level])) {
     const x = Math.floor(Math.random() * (x2 - x1 - 2)) + x1 + 1; // keep 1 space away from edge
     const y = Math.floor(Math.random() * (y2 - y1 - 2)) + y1 + 1; // keep 1 space away from edge
@@ -132,12 +138,12 @@ const initiateWeapons = (x1, x2, y1, y2, level, roomIndex) => {
 // **********************************
 // loop to create dungeon levels to populate state
 // **********************************
-for (let index = 0; index < 4; index++) {
+for (let index = 0; index < 5; index++) {
   occupied = new Set();
   // returns an array of 9 rooms randomly sized in a 3x3 grid
   // range must cover middle of grid square to simplify aligning hallways
   const rooms = {};
-  if (index > 0) {
+  if (index > 0 && index < 4) {
     for (let i = 0; i < 9; i++) {
       const x1 = Math.ceil(Math.random() * 12) + ((i % 3) * 34);
       const x2 = (31 - Math.floor(Math.random() * 12)) + ((i % 3) * 34);
@@ -168,19 +174,22 @@ for (let index = 0; index < 4; index++) {
       };
     }
   } else {
+    const enemyX = Math.floor(Math.random() * 58) + 21;
+    const enemyY = Math.floor(Math.random() * 28) + 21;
+    occupied.add(`${enemyX}_${enemyY}`); // string because there is no .has() ability on objects
     rooms[0] = {
       x1: 20,
       x2: 80,
       y1: 20,
       y2: 50,
-      visible: true,
-      active: true,
+      visible: !index,
+      active: !index,
       enemy: {
-        alive: false,
+        alive: index,
         type: 'generic',
         location: {
-          x: -1000,
-          y: -1000
+          x: enemyX,
+          y: enemyY
         }
       },
       health: {
@@ -190,28 +199,9 @@ for (let index = 0; index < 4; index++) {
           y: -1000
         }
       },
-      stairsDown: {
-        present: true,
-        location: {
-          x: 50,
-          y: 34
-        }
-      },
-      stairsUp: {
-        present: false,
-        location: {
-          x: -1000,
-          y: -1000
-        }
-      },
-      weapon: {
-        available: true,
-        type: 'Club',
-        location: {
-          x: 47,
-          y: 34
-        }
-      }
+      stairsDown: initiateStairs(20, 80, 20, 50, index, 0, 'down'),
+      stairsUp: initiateStairs(20, 80, 20, 50, index, 0, 'up'),
+      weapon: initiateWeapons(20, 80, 20, 50, index, 0)
     };
   }
   // finds the shared horizontal range between two rooms
@@ -232,7 +222,7 @@ for (let index = 0; index < 4; index++) {
   };
   // returns an array of hallways that connect rooms
   const halls = {};
-  if (index > 0) { // no halls on level 0
+  if (index > 0 && index < 4) { // no halls on level 0 or 4
     const hallOrder = shuffleHall.get(index);
     for (let i = 0; i < hallOrder.length - 1; i++) {
       if (Math.abs(hallOrder[i] - hallOrder[i + 1]) === 1) { // horizontal hallway

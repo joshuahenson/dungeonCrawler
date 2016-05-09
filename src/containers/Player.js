@@ -65,6 +65,7 @@ export default class Player extends Component {
       let playerHealth = this.props.player.health;
       let message = 'You began battle with an enemy. ';
       const weaponMultiplier = {
+        None: 0,
         Club: 1,
         Dagger: 2,
         Sword: 3
