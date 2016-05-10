@@ -15,17 +15,20 @@ import {
   increaseSkill
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
+import { throttle } from 'lodash';
 
 export default class Player extends Component {
   constructor(props) {
     super(props);
     this.currentRoom = 0;
+    // throttle helps with jank
+    this.throttledKeydown = throttle(this.checkPosition.bind(this), 20, { trailing: false });
   }
   componentDidMount() {
-    window.addEventListener('keydown', this.checkPosition.bind(this));
+    window.addEventListener('keydown', this.throttledKeydown);
   }
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.checkPosition.bind(this));
+    window.removeEventListener('keydown', this.throttledKeydown);
   }
   checkRooms(position, room, index, level) {
     if (position.x >= room.x1 && position.x < room.x2 &&
