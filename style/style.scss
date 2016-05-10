@@ -27,7 +27,7 @@ body {
 
 .message {
   @extend .info;
-  height: 50px;
+  height: 100px;
   overflow-y: auto;
   outline: 1px solid black; // separation for scrollbar
   outline-offset: -1px;
@@ -38,10 +38,10 @@ body {
     width: 6px;
   }
   &::-webkit-scrollbar-track {
-    background-color: lighten(black, 3%);
+    background-color: lighten(black, 4%);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: lighten(black, 7%);
+    background-color: lighten(black, 9%);
   }
 }
 
