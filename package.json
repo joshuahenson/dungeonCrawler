@@ -1,7 +1,7 @@
 {
-  "name": "ReduxBasicBoilerplate",
+  "name": "DungeonCrawler",
   "version": "0.0.1",
-  "description": "Boilerplate",
+  "description": "Roguelike game in React/Redux",
   "main": "index.js",
   "repository": "",
   "scripts": {
@@ -43,9 +43,8 @@
     "eslint-plugin-react": "^4.3.0"
   },
   "dependencies": {
-    "lodash": "^4.9.0",
     "react": "^15.0.1",
-    "react-bootstrap": "^0.28.3",
+    "react-modal": "^1.2.1",
     "react-dom": "^15.0.1",
     "react-redux": "^4.0.0",
     "redux": "^3.0.4"
