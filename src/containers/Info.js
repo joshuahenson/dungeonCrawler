@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toggleModal } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
-export default class Info extends Component {
+class Info extends Component {
   render() {
     const player = this.props.player;
     const level = this.props.level;

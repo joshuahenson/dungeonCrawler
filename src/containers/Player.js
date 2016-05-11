@@ -17,7 +17,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { throttle } from 'lodash';
 
-export default class Player extends Component {
+class Player extends Component {
   constructor(props) {
     super(props);
     this.currentRoom = 0;

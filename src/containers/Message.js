@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-export default class Message extends Component {
+class Message extends Component {
   componentDidUpdate() {
     const node = ReactDOM.findDOMNode(this.refs.message);
     node.scrollTop = node.scrollHeight;

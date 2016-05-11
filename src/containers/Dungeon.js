@@ -5,7 +5,7 @@ import Rooms from '../components/Rooms';
 import Halls from '../components/Halls';
 import Overlay from '../components/Overlay';
 
-export default class Dungeon extends Component {
+class Dungeon extends Component {
   render() {
     return (
       <div className="dungeon">
