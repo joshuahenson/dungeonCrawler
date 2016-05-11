@@ -86,3 +86,9 @@ export function increaseSkill() {
     type: 'INCREASE_SKILL'
   };
 }
+
+export function toggleModal() {
+  return {
+    type: 'TOGGLE_MODAL'
+  };
+}
