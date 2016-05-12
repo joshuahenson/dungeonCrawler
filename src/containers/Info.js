@@ -16,7 +16,7 @@ class Info extends Component {
           <span>Experience: {player.xp}</span>
           <span>Skill Level: {player.skill}</span>
         </div>
-        <button onClick = { () => this.props.toggleModal() }>Modal</button>
+        <button onClick = { () => this.props.toggleModal() } className="right">Key</button>
       </div>
     );
   }
