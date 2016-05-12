@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { toggleModal } from '../actions/index';
+import { toggleKeyModal } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 class Info extends Component {
@@ -16,7 +16,7 @@ class Info extends Component {
           <span>Experience: {player.xp}</span>
           <span>Skill Level: {player.skill}</span>
         </div>
-        <button onClick = { () => this.props.toggleModal() } className="right">Key</button>
+        <button onClick = { () => this.props.toggleKeyModal() } className="right">Key</button>
       </div>
     );
   }
@@ -25,7 +25,7 @@ class Info extends Component {
 Info.propTypes = {
   player: PropTypes.object,
   level: PropTypes.number,
-  toggleModal: PropTypes.func
+  toggleKeyModal: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -37,7 +37,7 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ toggleModal }, dispatch);
+  return bindActionCreators({ toggleKeyModal }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Info);

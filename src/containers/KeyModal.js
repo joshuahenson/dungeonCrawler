@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { toggleModal } from '../actions/index';
+import { toggleKeyModal } from '../actions/index';
 import { bindActionCreators } from 'redux';
 import Modal from '../components/Modal';
 
@@ -10,8 +10,8 @@ class KeyModal extends Component {
   render() {
     return (
       <Modal
-        showing={this.props.modal}
-        hide={ () => this.props.toggleModal() }
+        showing={this.props.keyModal}
+        hide={ () => this.props.toggleKeyModal() }
       >
         <h2>Key</h2>
         <hr />
@@ -39,6 +39,7 @@ class KeyModal extends Component {
           </svg>
         </div>
         <div>
+        <div>
           <span>Enemies: </span>
           { enemyColors.map((color, index) =>
             <svg width="15" height="10" key={index}>
@@ -49,6 +50,13 @@ class KeyModal extends Component {
             </svg>
           ) }
         </div>
+          <span>Health Pack: </span>
+          <svg width="10" height="10">
+            <rect x="0" y="0" width="10" height="10" fill="white" />
+            <rect x="2" y="4" width="6" height="2" fill="red" />
+            <rect x="4" y="2" width="2" height="6" fill="red" />
+          </svg>
+        </div>
         <div>
           <span>Weapon: </span>
           <svg width="10" height="10">
@@ -58,25 +66,25 @@ class KeyModal extends Component {
           </svg>
         </div>
         <hr />
-        <button onClick={ () => this.props.toggleModal() }>Close</button>
+        <button onClick={ () => this.props.toggleKeyModal() }>Close</button>
       </Modal>
     );
   }
 }
 
 KeyModal.propTypes = {
-  modal: PropTypes.bool,
-  toggleModal: PropTypes.func
+  keyModal: PropTypes.bool,
+  toggleKeyModal: PropTypes.func
 };
 
 function mapStateToProps(state) {
   return {
-    modal: state.modal
+    keyModal: state.modal.keyModal
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ toggleModal }, dispatch);
+  return bindActionCreators({ toggleKeyModal }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(KeyModal);

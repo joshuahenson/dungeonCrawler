@@ -87,8 +87,8 @@ export function increaseSkill() {
   };
 }
 
-export function toggleModal() {
+export function toggleKeyModal() {
   return {
-    type: 'TOGGLE_MODAL'
+    type: 'TOGGLE_KEY_MODAL'
   };
 }
