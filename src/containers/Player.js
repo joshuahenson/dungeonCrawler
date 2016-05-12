@@ -177,23 +177,25 @@ class Player extends Component {
     }
   }
   checkPosition(key) {
-    // check key direction and whether board is open
-    let newPosition = null;
-    const board = this.props.dungeon[this.props.level].board;
-    const x = this.props.player.location.x;
-    const y = this.props.player.location.y;
-    if (key.keyCode === 37 && board[x - 1][y]) { // left
-      newPosition = { x: x - 1, y };
-    } else if (key.keyCode === 38 && board[x][y - 1]) { // up
-      newPosition = { x, y: y - 1 };
-    } else if (key.keyCode === 39 && board[x + 1][y]) { // right
-      newPosition = { x: x + 1, y };
-    } else if (key.keyCode === 40 && board[x][y + 1]) { // down
-      newPosition = { x, y: y + 1 };
-    }
-    if (newPosition) {
-      this.props.updatePosition(newPosition);
-      this.checkStatus(newPosition, this.props.level);
+    // check key direction and whether board is open when state = playing
+    if (this.props.playing) {
+      let newPosition = null;
+      const board = this.props.dungeon[this.props.level].board;
+      const x = this.props.player.location.x;
+      const y = this.props.player.location.y;
+      if (key.keyCode === 37 && board[x - 1][y]) { // left
+        newPosition = { x: x - 1, y };
+      } else if (key.keyCode === 38 && board[x][y - 1]) { // up
+        newPosition = { x, y: y - 1 };
+      } else if (key.keyCode === 39 && board[x + 1][y]) { // right
+        newPosition = { x: x + 1, y };
+      } else if (key.keyCode === 40 && board[x][y + 1]) { // down
+        newPosition = { x, y: y + 1 };
+      }
+      if (newPosition) {
+        this.props.updatePosition(newPosition);
+        this.checkStatus(newPosition, this.props.level);
+      }
     }
   }
   render() {
@@ -228,14 +230,16 @@ Player.propTypes = {
   updateMessage: PropTypes.func,
   foundWeapon: PropTypes.func,
   defeatedEnemy: PropTypes.func,
-  increaseSkill: PropTypes.func
+  increaseSkill: PropTypes.func,
+  playing: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     player: state.player,
     dungeon: state.dungeon,
-    level: state.dungeon.level
+    level: state.dungeon.level,
+    playing: state.playing
   };
 }
 
