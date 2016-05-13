@@ -12,7 +12,8 @@ import {
   updateMessage,
   foundWeapon,
   defeatedEnemy,
-  increaseSkill
+  increaseSkill,
+  toggleFinishedModal
 } from '../actions/index';
 import { bindActionCreators } from 'redux';
 import { throttle } from 'lodash';
@@ -85,6 +86,12 @@ class Player extends Component {
         if (enemyHealth <= 0) {
           message += 'You have defeated the enemy!';
           this.props.defeatedEnemy(index, level, message, playerHealth);
+          if (this.props.level === 4) {
+            this.props.toggleFinishedModal(
+              'Victory!',
+              'You have rescued the prince.'
+            );
+          }
           break;
         }
         enemyAttack = Math.floor(Math.random() * 11) + (level * 3);
@@ -94,8 +101,12 @@ class Player extends Component {
         if (playerHealth <= 0) {
           message += 'You have been defeated!';
           this.props.updateMessage(message);
-          this.props.toggleDungeonVis();
-          // todo add gameOver()
+          this.props.toggleFinishedModal(
+            'Game Over!',
+            'You have been killed. Defeating enemies in earlier levels builds ' +
+            'experience to help you defeat enemies later on. Picking up better ' +
+            'weapons also increases your attack'
+          );
           break;
         }
       }
@@ -231,7 +242,8 @@ Player.propTypes = {
   foundWeapon: PropTypes.func,
   defeatedEnemy: PropTypes.func,
   increaseSkill: PropTypes.func,
-  playing: PropTypes.bool
+  playing: PropTypes.bool,
+  toggleFinishedModal: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -256,7 +268,8 @@ function mapDispatchToProps(dispatch) {
     updateMessage,
     foundWeapon,
     defeatedEnemy,
-    increaseSkill
+    increaseSkill,
+    toggleFinishedModal
   }, dispatch);
 }
 

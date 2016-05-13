@@ -18,6 +18,7 @@ body {
     position: absolute;
     right: 10px;
     bottom: 1px;
+    padding: 2px;
   }
 }
 
@@ -101,7 +102,7 @@ body {
   right: 0;
   z-index: auto;
   background-color: black;
-  opacity: 0.9;
+  opacity: 0.7;
 }
 
 .modal-dialog {
@@ -113,6 +114,12 @@ body {
   color: darken(white, 5%);
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
   padding: 50px;
+  > div > button {
+    position: static;
+    width: 100px;
+    margin: 10px auto;
+    display: block;
+  }
   > button {
     position: absolute;
     right: 10px;
@@ -130,4 +137,5 @@ button {
   font-size: inherit;
   display: inline-block;
   cursor: pointer;
+  padding: 10px;
 }

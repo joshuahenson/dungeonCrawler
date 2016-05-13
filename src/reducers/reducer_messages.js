@@ -1,4 +1,5 @@
-const initialState = ['Use the arrow keys to explore the dungeon.'];
+const initialState = ['Use the arrow keys to explore the dungeon and ' +
+  'defeat the final enemy to rescue the prince.'];
 
 const message = (state = initialState, action) => {
   switch (action.type) {
@@ -7,6 +8,10 @@ const message = (state = initialState, action) => {
       return [
         ...state,
         action.message
+      ];
+    case 'RESTART_GAME':
+      return [
+        initialState
       ];
     default:
       return state;

@@ -1,5 +1,3 @@
-# Work in progress
+# Dungeon Crawler
 
-todo
-
-game over screen with play again option - change initialState in reducers from const to function in order to reset
+A Roguelike game made in React with Redux.

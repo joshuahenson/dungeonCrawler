@@ -92,3 +92,17 @@ export function toggleKeyModal() {
     type: 'TOGGLE_KEY_MODAL'
   };
 }
+
+export function toggleFinishedModal(title, message) {
+  return {
+    type: 'TOGGLE_FINISHED_MODAL',
+    title,
+    message
+  };
+}
+
+export function restartGame() {
+  return {
+    type: 'RESTART_GAME'
+  };
+}

@@ -1,7 +1,7 @@
 const initialState = {
   location: {
-    x: 45,
-    y: 34
+    x: 50,
+    y: 35
   },
   weapon: 'None',
   health: 100,
@@ -32,6 +32,8 @@ const player = (state = initialState, action) => {
       return Object.assign({}, state, {
         skill: state.skill + 1
       });
+    case 'RESTART_GAME':
+      return initialState;
     default:
       return state;
   }
